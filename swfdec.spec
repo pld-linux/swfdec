@@ -14,7 +14,7 @@ BuildRequires:	SDL-devel >= 1.2.5
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gimp-devel >= 1:2.0.0
-BuildRequires:	gtk+2-devel >= 2.1.2
+BuildRequires:	gtk+2-devel >= 1:2.1.2
 BuildRequires:	libart_lgpl-devel >= 2.0
 BuildRequires:	libmad-devel >= 0.14.2b
 BuildRequires:	liboil-devel >= 0.2
