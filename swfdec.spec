@@ -8,6 +8,7 @@ Group:		Libraries
 Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Patch0:		%{name}-configure.patch
 Patch1:		%{name}-am.patch
+Patch2:		%{name}-mozilla1.4.patch
 URL:		http://swfdec.sourceforge.net/
 BuildRequires:	SDL-devel >= 1.2.5
 BuildRequires:	autoconf
@@ -73,6 +74,7 @@ Wtyczka mozilli wy¶wietlaj±ca animacje flash bazuj±ca na bibliotece swfdec.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 rm -f missing
@@ -81,7 +83,6 @@ rm -f missing
 %{__autoheader}
 %{__autoconf}
 %{__automake}
-CFLAGS="%{rpmcflags} -DMOZ_X11"
 %configure
 
 %{__make}
