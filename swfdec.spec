@@ -9,6 +9,7 @@ Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Patch0:		%{name}-configure.patch
 Patch1:		%{name}-am.patch
 URL:		http://swfdec.sourceforge.net/
+BuildRequires:	SDL-devel >= 1.2.5
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gtk+2-devel
