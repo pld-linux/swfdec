@@ -2,7 +2,7 @@ Summary:	Flash animations redering library
 Summary(pl):	Biblioteka renderuj±ca animacje flash
 Name:		swfdec
 Version:	0.2.2
-Release:	1
+Release:	2
 License:	GPL
 Group:		Libraries
 Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
@@ -10,15 +10,17 @@ Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Patch0:		%{name}-configure.patch
 Patch1:		%{name}-am.patch
 Patch2:		%{name}-mozilla1.4.patch
+Patch3:		%{name}-types.patch
 URL:		http://swfdec.sourceforge.net/
 BuildRequires:	SDL-devel >= 1.2.5
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	gtk+2-devel
+BuildRequires:	gtk+2-devel >= 2.1.2
 BuildRequires:	libart_lgpl-devel >= 2.0
 BuildRequires:	libmad-devel >= 0.14.2b
 BuildRequires:	libtool
 BuildRequires:	mozilla-devel >= 1.0
+BuildRequires:	pkgconfig
 BuildRequires:	zlib-devel >= 1.1.4
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	libswfdec0
@@ -76,9 +78,9 @@ Wtyczka mozilli wy¶wietlaj±ca animacje flash bazuj±ca na bibliotece swfdec.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
-rm -f missing
 %{__libtoolize}
 %{__aclocal}
 %{__autoheader}
