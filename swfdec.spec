@@ -46,8 +46,8 @@ Pliki nag³ówkowe niezbêdne do kompilacji programów korzystaj±cych z
 biblioteki swfdec.
 
 %package static
-Summary:	Static swfdec library.
-Summary(pl):	Statyczna biblioteka swfdec.
+Summary:	Static swfdec library
+Summary(pl):	Statyczna biblioteka swfdec
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}
 
