@@ -5,11 +5,11 @@ diff -urN swfdec-0.1.3.orig/configure.ac swfdec-0.1.3/configure.ac
  dnl AM_DISABLE_STATIC
  
  dnl when going to/from release please set the nano (fourth number) right !
--AS_VERSION(swfdec, SWFDEC, 0, 1, 3)
-+dnl AS_VERSION(swfdec, SWFDEC, 0, 1, 3)
+-AS_VERSION(swfdec, SWFDEC, 0, 2, 0)
++dnl AS_VERSION(swfdec, SWFDEC, 0, 2, 0)
  AM_INIT_AUTOMAKE($PACKAGE,$VERSION)
--AS_LIBTOOL(SWFDEC, 0, 0, 0, yes)
-+dnl AS_LIBTOOL(SWFDEC, 0, 0, 0, yes)
+-AS_LIBTOOL(SWFDEC, 0, 1, 0, yes)
++dnl AS_LIBTOOL(SWFDEC, 0, 1, 0, yes)
  
  AM_CONFIG_HEADER(config.h)
  
