@@ -33,7 +33,7 @@ supported yet.
 %description -l pl
 Biblioteka libswfdec przeznaczona jest do odtwarzania animacji flash.
 Obecnie potrafi wy¶wietliæ wiêkszo¶æ animacji Flash 3 i czê¶æ Flash 4.
-Interaktywnosæ nie jest jeszcze obs³ugiwana.
+Interaktywno¶æ nie jest jeszcze obs³ugiwana.
 
 %package devel
 Summary:	Header file required to build programs using swfdec library
