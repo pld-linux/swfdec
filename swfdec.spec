@@ -1,8 +1,8 @@
 Summary:	Flash animations redering library
 Summary(pl):	Biblioteka renderuj±ca animacje flash
 Name:		swfdec
-Version:	0.2.0
-Release:	2
+Version:	0.2.1
+Release:	1
 License:	GPL
 Group:		Libraries
 Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
@@ -105,6 +105,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc TODO README Change*
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_libdir}/lib*.so.*.*
+%attr(755,root,root) %{_libdir}/gtk-*/*/loaders/*.so
 
 %files devel
 %defattr(644,root,root,755)
