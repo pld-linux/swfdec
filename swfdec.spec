@@ -17,6 +17,7 @@ BuildRequires:	mad-devel >= 0.14.2b
 BuildRequires:	mozilla-devel >= 1.0.0
 BuildRequires:	zlib-devel >= 1.1.4
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+Obsoletes:	libswfdec0
 
 %define		_prefix		/usr/X11R6
 
@@ -35,6 +36,7 @@ Summary:	Header file required to build programs using swfdec library
 Summary(pl):	Pliki nag³ówkowe wymagane przez programy u¿ywaj±ce swfdec
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}
+Obsoletes:	libswfdec0-devel
 
 %description devel
 Header files required to build programs using swfdec library.
