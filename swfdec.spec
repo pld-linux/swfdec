@@ -72,13 +72,13 @@ Wtyczka mozilli wy¶wietlaj±ca animacje flash bazuj±ca na bibliotece swfdec.
 %patch0 -p1
 
 %build
-mv aclocal.m4 acinclude.m4
-rm -f missing
-%{__libtoolize}
-%{__aclocal}
-%{__autoheader}
+#mv aclocal.m4 acinclude.m4
+#rm -f missing
+#%%{__libtoolize}
+#%%{__aclocal}
+#%%{__autoheader}
 %{__autoconf}
-%{__automake}
+#%%{__automake}
 %configure
 
 %{__make}
