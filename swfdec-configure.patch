@@ -1,0 +1,40 @@
+diff -urN swfdec-0.1.2.orig/configure.ac swfdec-0.1.2/configure.ac
+--- swfdec-0.1.2.orig/configure.ac	Thu Nov  7 12:04:59 2002
++++ swfdec-0.1.2/configure.ac	Thu Nov  7 12:20:38 2002
+@@ -8,9 +8,9 @@
+ dnl AM_DISABLE_STATIC
+ 
+ dnl when going to/from release please set the nano (fourth number) right !
+-AS_VERSION(swfdec, SWFDEC, 0, 1, 2)
++dnl AS_VERSION(swfdec, SWFDEC, 0, 1, 2)
+ AM_INIT_AUTOMAKE($PACKAGE,$VERSION)
+-AS_LIBTOOL(SWFDEC, 0, 0, 0, yes)
++dnl AS_LIBTOOL(SWFDEC, 0, 0, 0, yes)
+ 
+ AM_CONFIG_HEADER(config.h)
+ 
+@@ -21,6 +21,7 @@
+ AM_MAINTAINER_MODE
+ 
+ AC_PROG_CC
++AC_PROG_LIBTOOL
+ AM_PROG_CC_STDC
+ AM_PROG_AS
+ AS="${CC}"
+@@ -102,14 +103,8 @@
+ fi
+ AC_SUBST(MAD_LIBS)
+ 
+-if test -z "$MOZILLA_CONFIG"; then
+-  AC_PATH_PROG(MOZILLA_CONFIG, mozilla-config, no)
+-fi
+-if test "$MOZILLA_CONFIG" = "no"; then
+-  AC_MSG_ERROR([cannot find mozilla development headers, which is required for build])
+-fi
+-_mozilla_include_dir=`mozilla-config --cflags|sed 's/-I\(.*\) .*/\1/'`
+-MOZILLA_CFLAGS="-I$_mozilla_include_dir/plugin -I$_mozilla_include_dir/java -I$_mozilla_include_dir/nspr"
++_mozilla_include_dir="`$PKG_CONFIG --variable=includedir mozilla-gtkmozembed`"
++MOZILLA_CFLAGS="-I$_mozilla_include_dir/plugin -I$_mozilla_include_dir/java -I`$PKG_CONFIG --variable=includedir mozilla-nspr`/nspr"
+ AC_SUBST(MOZILLA_CFLAGS)
+ 
+ dnl Check for X11 extensions
