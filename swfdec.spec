@@ -1,23 +1,27 @@
 Summary:	Flash animations redering library
 Summary(pl):	Biblioteka renderuj±ca animacje flash
 Name:		swfdec
-Version:	0.3.2
-Release:	2
+Version:	0.3.3
+Release:	1
 License:	GPL
 Group:		Libraries
 Source0:	http://www.schleef.org/swfdec/download/%{name}-%{version}.tar.gz
-# Source0-md5:	8732cd3b96ab803ceb3e723b6dbf0493
+# Source0-md5:	afa290b7351ddf543b8df132835b78f3
 Patch0:		%{name}-configure.patch
 Patch1:		%{name}-am.patch
 URL:		http://www.schleef.org/swfdec/
 BuildRequires:	SDL-devel >= 1.2.5
-BuildRequires:	autoconf
-BuildRequires:	automake
+BuildRequires:	autoconf >= 2.58
+BuildRequires:	automake >= 1.6
 BuildRequires:	gimp-devel >= 1:2.0.0
+BuildRequires:	gstreamer-devel >= 0.8.0
+BuildRequires:	gstreamer-GConf-devel >= 0.8.0
+# gstreamer-interfaces-0.8
+BuildRequires:	gstreamer-plugins-devel >= 0.8.0
 BuildRequires:	gtk+2-devel >= 1:2.1.2
 BuildRequires:	libart_lgpl-devel >= 2.0
 BuildRequires:	libmad-devel >= 0.14.2b
-BuildRequires:	liboil-devel >= 0.2
+BuildRequires:	liboil-devel >= 0.3.0
 BuildRequires:	libtool
 BuildRequires:	mozilla-devel >= 2:1.0
 BuildRequires:	pkgconfig
@@ -45,7 +49,7 @@ Requires:	%{name} = %{version}-%{release}
 Requires:	glib2-devel >= 2.0.0
 Requires:	libart_lgpl-devel >= 2.0
 Requires:	libmad-devel >= 0.14.2b
-Requires:	liboil-devel >= 0.2
+Requires:	liboil-devel >= 0.3.0
 Obsoletes:	libswfdec0-devel
 
 %description devel
@@ -147,4 +151,4 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n mozilla-plugin-%{name}
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/mozilla/plugins/libmozswfdec.so
+%attr(755,root,root) %{_libdir}/mozilla/plugins/libswfdecmozilla.so
