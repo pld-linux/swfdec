@@ -7,6 +7,7 @@ License:	GPL
 Group:		Libraries
 Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Patch0:		%{name}-configure.patch
+Patch1:		%{name}-am.patch
 URL:		http://swfdec.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -70,15 +71,15 @@ Wtyczka mozilli wy¶wietlaj±ca animacje flash bazuj±ca na bibliotece swfdec.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
-#mv aclocal.m4 acinclude.m4
-#rm -f missing
-#%%{__libtoolize}
-#%%{__aclocal}
-#%%{__autoheader}
+rm -f missing
+%{__libtoolize}
+%{__aclocal}
+%{__autoheader}
 %{__autoconf}
-#%%{__automake}
+%{__automake}
 %configure
 
 %{__make}
