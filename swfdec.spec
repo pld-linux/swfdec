@@ -6,6 +6,7 @@ Release:	1
 License:	GPL
 Group:		Libraries
 Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+# Source0-md5: 08c60d18f350c68c4b938dc29e9b1191
 Patch0:		%{name}-configure.patch
 Patch1:		%{name}-am.patch
 Patch2:		%{name}-mozilla1.4.patch
