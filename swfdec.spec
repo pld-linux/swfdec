@@ -72,12 +72,13 @@ Wtyczka mozilli wy¶wietlaj±ca animacje flash bazuj±ca na bibliotece swfdec.
 %patch0 -p1
 
 %build
-#rm -f missing
-#%%{__libtoolize}
-#%%{__aclocal} -I .
-#%%{__autoheader}
+mv aclocal.m4 acinclude.m4
+rm -f missing
+%{__libtoolize}
+%{__aclocal}
+%{__autoheader}
 %{__autoconf}
-#%%{__automake}
+%{__automake}
 %configure
 
 %{__make}
@@ -90,6 +91,7 @@ rm -rf $RPM_BUILD_ROOT
 	pkgconfigdir=%{_pkgconfigdir}
 
 rm -f $RPM_BUILD_ROOT%{_libdir}/mozilla/plugins/*.{a,la}
+
 
 sed -e 's,include/swfdec,include,g' swfdec.pc \
        > $RPM_BUILD_ROOT%{_pkgconfigdir}/swfdec.pc 
