@@ -2,7 +2,7 @@ Summary:	Flash animations redering library
 Summary(pl):	Biblioteka renderuj±ca animacje flash
 Name:		swfdec
 Version:	0.2.2
-Release:	2
+Release:	3
 License:	GPL
 Group:		Libraries
 Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
@@ -39,7 +39,7 @@ Interaktywnosæ nie jest jeszcze obs³ugiwana.
 Summary:	Header file required to build programs using swfdec library
 Summary(pl):	Pliki nag³ówkowe wymagane przez programy u¿ywaj±ce swfdec
 Group:		X11/Development/Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 Obsoletes:	libswfdec0-devel
 
 %description devel
@@ -53,7 +53,7 @@ biblioteki swfdec.
 Summary:	Static swfdec library
 Summary(pl):	Statyczna biblioteka swfdec
 Group:		X11/Development/Libraries
-Requires:	%{name}-devel = %{version}
+Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
 Static swfdec library.
@@ -65,7 +65,7 @@ Statyczna biblioteka swfdec.
 Summary:	Mozilla plugin for Flash rendering
 Summary(pl):	Wtyczka mozilli wu¶wietlaj±ca animacje flash
 Group:		X11/Libraries
-Requires:	%{name} = %{version}
+Requires:	%{name} = %{version}-%{release}
 
 %description -n mozilla-plugin-%{name}
 Mozilla plugin for rendering of Flash animations based on swfdec library.
@@ -87,7 +87,6 @@ Wtyczka mozilli wy¶wietlaj±ca animacje flash bazuj±ca na bibliotece swfdec.
 %{__autoconf}
 %{__automake}
 %configure
-
 %{__make}
 
 %install
