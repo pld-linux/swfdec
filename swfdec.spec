@@ -81,6 +81,7 @@ rm -f missing
 %{__autoheader}
 %{__autoconf}
 %{__automake}
+CFLAGS="%{rpmcflags} -DMOZ_X11"
 %configure
 
 %{__make}
