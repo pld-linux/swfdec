@@ -16,8 +16,8 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gtk+2-devel
 BuildRequires:	libart_lgpl-devel >= 2.0
+BuildRequires:	libmad-devel >= 0.14.2b
 BuildRequires:	libtool
-BuildRequires:	mad-devel >= 0.14.2b
 BuildRequires:	mozilla-devel >= 1.0
 BuildRequires:	zlib-devel >= 1.1.4
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
