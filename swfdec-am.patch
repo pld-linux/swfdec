@@ -1,0 +1,103 @@
+diff -urN swfdec-0.2.0.orig/acinclude.m4 swfdec-0.2.0/acinclude.m4
+--- swfdec-0.2.0.orig/acinclude.m4	Thu Jan  1 01:00:00 1970
++++ swfdec-0.2.0/acinclude.m4	Sat Jan 25 16:09:32 2003
+@@ -0,0 +1,99 @@
++dnl version.m4 0.0.5
++dnl autostars m4 macro for versioning
++dnl thomas@apestaart.org
++dnl
++dnl AS_VERSION(PACKAGE, PREFIX, MAJOR, MINOR, MICRO, NANO, ACTION_IF_NO_NANO, ACTION_IF_NANO)
++dnl example
++dnl AS_VERSION(gstreamer, GST_VERSION, 0, 3, 2,)
++dnl for a 0.3.2 release version
++dnl
++dnl this macro
++dnl - defines [$PREFIX]_MAJOR, MINOR and MICRO
++dnl - if NANO is empty, then we're in release mode, else in cvs/dev mode
++dnl - defines [$PREFIX], VERSION, and [$PREFIX]_RELEASE
++dnl - executes the relevant action
++dnl - AC_SUBST's PACKAGE, VERSION, [$PREFIX] and [$PREFIX]_RELEASE
++dnl   as well as the little ones
++dnl - doesn't call AM_INIT_AUTOMAKE anymore because it prevents
++dnl   maintainer mode from running ok
++dnl
++dnl don't forget to put #undef [$2] and [$2]_RELEASE in acconfig.h
++
++AC_DEFUN(AS_VERSION,
++[
++  PACKAGE=[$1]
++  [$2]_MAJOR=[$3]
++  [$2]_MINOR=[$4]
++  [$2]_MICRO=[$5]
++  NANO=[$6]
++  if test "x$NANO" = "x" || test "x$NANO" = "x0";
++  then
++      AC_MSG_NOTICE(configuring [$1] for release)
++      VERSION=[$3].[$4].[$5]
++      [$2]_RELEASE=1
++      dnl execute action
++      ifelse([$7], , :, [$7])
++  else
++      AC_MSG_NOTICE(configuring [$1] for development with nano $NANO)
++      VERSION=[$3].[$4].[$5].$NANO
++      [$2]_RELEASE=`date +%Y%m%d_%H%M%S`
++      dnl execute action
++      ifelse([$8], , :, [$8])
++  fi
++
++  [$2]=$VERSION
++  AC_DEFINE_UNQUOTED([$2], "$[$2]", [Define the version])
++  AC_SUBST([$2])
++  AC_DEFINE_UNQUOTED([$2]_RELEASE, "$[$2]_RELEASE", [Define the release version])
++  AC_SUBST([$2]_RELEASE)
++
++  AC_SUBST([$2]_MAJOR)
++  AC_SUBST([$2]_MINOR)
++  AC_SUBST([$2]_MICRO)
++  AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE", [Define the package name])
++  AC_SUBST(PACKAGE)
++  AC_DEFINE_UNQUOTED(VERSION, "$VERSION", [Define the version])
++  AC_SUBST(VERSION)
++])
++
++
++dnl as-libtool.m4 0.0.2
++dnl autostars m4 macro for libtool versioning
++dnl thomas@apestaart.org
++dnl
++dnl AS_LIBTOOL(PREFIX, CURRENT, REVISION, AGE, USE_RELEASE)
++dnl example
++dnl AS_VERSION(GST, 2, 0, 0)
++dnl
++dnl this macro
++dnl - defines [$PREFIX]_CURRENT, REVISION AND AGE
++dnl - defines [$PREFIX]_LIBVERSION
++dnl - defines [$PREFIX]_LT_LDFLAGS to set versioning
++dnl - AC_SUBST's them all
++dnl
++dnl if USE_RELEASE = yes, then add a -release option to the LDFLAGS
++dnl with the (pre-defined) [$PREFIX]_VERSION 
++dnl then use [$PREFIX]_LT_LDFLAGS in the relevant Makefile.am's
++
++AC_DEFUN(AS_LIBTOOL,
++[
++  [$1]_CURRENT=[$2]
++  [$1]_REVISION=[$3]
++  [$1]_AGE=[$4]
++  [$1]_LIBVERSION=[$2]:[$3]:[$4]
++  AC_SUBST([$1]_CURRENT)
++  AC_SUBST([$1]_REVISION)
++  AC_SUBST([$1]_AGE)
++  AC_SUBST([$1]_LIBVERSION)
++
++dnl  [$1]_LT_LDFLAGS="$[$1]_LT_LDFLAGS -version-info $[$1]_LIBVERSION"
++  if test ! -z "[$5]"
++  then
++    [$1]_LT_LDFLAGS="$[$1]_LT_LDFLAGS -release $[$1]_VERSION"
++  fi
++  AC_SUBST([$1]_LT_LDFLAGS)
++
++  AC_LIBTOOL_DLOPEN
++  AM_PROG_LIBTOOL
++])
++
