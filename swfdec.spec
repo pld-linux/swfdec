@@ -5,7 +5,7 @@ Version:	0.2.1
 Release:	1
 License:	GPL
 Group:		Libraries
-Source0:	http://prdownloads.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
+Source0:	http://dl.sourceforge.net/%{name}/%{name}-%{version}.tar.gz
 Patch0:		%{name}-configure.patch
 Patch1:		%{name}-am.patch
 URL:		http://swfdec.sourceforge.net/
