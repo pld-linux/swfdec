@@ -91,6 +91,9 @@ rm -rf $RPM_BUILD_ROOT
 
 rm -f $RPM_BUILD_ROOT%{_libdir}/mozilla/plugins/*.{a,la}
 
+sed -e 's,include/swfdec,include,g' swfdec.pc \
+       > $RPM_BUILD_ROOT%{_pkgconfigdir}/swfdec.pc 
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
