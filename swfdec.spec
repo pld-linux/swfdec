@@ -10,8 +10,12 @@ Patch0:		%{name}-configure.patch
 URL:		http://swfdec.sourceforge.net/
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	gtk+2-devel
+BuildRequires:	libart_lgpl-devel >= 2.0
 BuildRequires:	libtool
-BuildRequires:	mozilla-devel
+BuildRequires:	mad-devel >= 0.14.2b
+BuildRequires:	mozilla-devel >= 1.0.0
+BuildRequires:	zlib-devel >= 1.1.4
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_prefix		/usr/X11R6
@@ -51,16 +55,16 @@ Static swfdec library.
 %description static -l pl
 Statyczna biblioteka swfdec.
 
-%package mozilla-plugin
+%package -n mozilla-plugin-%{name}
 Summary:	Mozilla plugin for Flash rendering
 Summary(pl):	Wtyczka mozilli wu¶wietlaj±ca animacje flash
 Group:		X11/Libraries
 Requires:	%{name} = %{version}
 
-%description mozilla-plugin
+%description -n mozilla-plugin-%{name}
 Mozilla plugin for rendering of Flash animations based on swfdec library.
 
-%description mozilla-plugin -l pl
+%description -n mozilla-plugin-%{name} -l pl
 Wtyczka mozilli wy¶wietlaj±ca animacje flash bazuj±ca na bibliotece swfdec.
 
 %prep
@@ -87,11 +91,11 @@ rm -rf $RPM_BUILD_ROOT
 
 rm -f $RPM_BUILD_ROOT%{_libdir}/mozilla/plugins/*.{a,la}
 
-%post	-p /sbin/ldconfig
-%postun	-p /sbin/ldconfig
-
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%post	-p /sbin/ldconfig
+%postun	-p /sbin/ldconfig
 
 %files
 %defattr(644,root,root,755)
@@ -101,6 +105,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/lib*.so
 %attr(755,root,root) %{_libdir}/lib*.la
 %{_includedir}/*
 %{_pkgconfigdir}/*
@@ -109,6 +114,6 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/lib*.a
 
-%files mozilla-plugin
+%files -n mozilla-plugin-%{name}
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/mozilla/plugins/lib*.so
