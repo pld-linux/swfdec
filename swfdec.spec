@@ -1,12 +1,12 @@
 Summary:	Flash animations redering library
 Summary(pl):	Biblioteka renderuj±ca animacje flash
 Name:		swfdec
-Version:	0.3.4
+Version:	0.3.5
 Release:	1
 License:	GPL
 Group:		Libraries
 Source0:	http://www.schleef.org/swfdec/download/%{name}-%{version}.tar.gz
-# Source0-md5:	a307a12e6792f9c26c2f7d7149580d29
+# Source0-md5:	cc40397d7784efee549fb7853b01cac3
 Patch0:		%{name}-configure.patch
 URL:		http://www.schleef.org/swfdec/
 BuildRequires:	SDL-devel >= 1.2.5
