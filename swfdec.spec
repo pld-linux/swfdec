@@ -1,3 +1,7 @@
+# Conditional build:
+%bcond_without	gstreamer	# build without gstreamer/mozilla plugin
+#				  (for bootstrap)
+#
 Summary:	Flash animations redering library
 Summary(pl):	Biblioteka renderuj±ca animacje flash
 Name:		swfdec
@@ -13,16 +17,18 @@ BuildRequires:	SDL-devel >= 1.2.5
 BuildRequires:	autoconf >= 2.58
 BuildRequires:	automake >= 1.6
 BuildRequires:	gimp-devel >= 1:2.0.0
+%if %{with gstreamer}
 BuildRequires:	gstreamer-devel >= 0.8.0
 BuildRequires:	gstreamer-GConf-devel >= 0.8.0
 # gstreamer-interfaces-0.8
 BuildRequires:	gstreamer-plugins-devel >= 0.8.0
+%endif
 BuildRequires:	gtk+2-devel >= 1:2.1.2
 BuildRequires:	libart_lgpl-devel >= 2.0
 BuildRequires:	libmad-devel >= 0.14.2b
 BuildRequires:	liboil-devel >= 0.3.0
 BuildRequires:	libtool
-BuildRequires:	mozilla-devel >= 2:1.0
+%{?with_gstreamer:BuildRequires:	mozilla-devel >= 2:1.0}
 BuildRequires:	pkgconfig
 BuildRequires:	zlib-devel >= 1.1.4
 Obsoletes:	libswfdec0
@@ -104,7 +110,9 @@ Wtyczka mozilli wy¶wietlaj±ca animacje flash bazuj±ca na bibliotece swfdec.
 %{__autoheader}
 %{__autoconf}
 %{__automake}
-%configure
+%configure \
+	%{?!with_gstreamer:--disable-mozilla-plugin}
+	
 %{__make} \
 	gimpdir=%{gimpplugindir}
 
@@ -147,6 +155,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gimpplugindir}/swf
 
+%if %{with gstreamer}
 %files -n mozilla-plugin-%{name}
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/mozilla/plugins/libswfdecmozilla.so
+%endif
