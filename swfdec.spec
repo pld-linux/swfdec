@@ -1,6 +1,7 @@
 # Conditional build:
 %bcond_without	gstreamer	# build without gstreamer/mozilla plugin
-#				  (for bootstrap)
+				# (for bootstrap)
+%bcond_without	gimp		# don't build gimp plugin
 #
 Summary:	Flash animations redering library
 Summary(pl):	Biblioteka renderuj±ca animacje flash
@@ -16,7 +17,7 @@ URL:		http://www.schleef.org/swfdec/
 BuildRequires:	SDL-devel >= 1.2.5
 BuildRequires:	autoconf >= 2.58
 BuildRequires:	automake >= 1.6
-BuildRequires:	gimp-devel >= 1:2.0.0
+%{?with_gimp:BuildRequires:	gimp-devel >= 1:2.0.0}
 %if %{with gstreamer}
 BuildRequires:	gstreamer-devel >= 0.8.0
 BuildRequires:	gstreamer-GConf-devel >= 0.8.0
@@ -34,7 +35,8 @@ BuildRequires:	zlib-devel >= 1.1.4
 Obsoletes:	libswfdec0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		gimpplugindir	%(gimptool --gimpplugindir)/plug-ins
+
+%{?with_gimp:%define		gimpplugindir	%(gimptool --gimpplugindir)/plug-ins}
 
 %description
 Libswfdec is a library for rendering Flash animations. Currently it
@@ -151,9 +153,11 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libswfdec-*.a
 
+%if %{with gimp}
 %files -n gimp-plugin-%{name}
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gimpplugindir}/swf
+%endif
 
 %if %{with gstreamer}
 %files -n mozilla-plugin-%{name}
