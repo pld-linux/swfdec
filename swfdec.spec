@@ -114,7 +114,7 @@ Wtyczka mozilli wy¶wietlaj±ca animacje flash bazuj±ca na bibliotece swfdec.
 %configure \
 	%{!?with_gstreamer:--disable-mozilla-plugin} \
 	%{?with_libart:--with-backend=libart}
-	
+
 %{__make} \
 	gimpdir=%{gimpplugindir}
 
