@@ -6,7 +6,7 @@ Summary:	Flash animations redering library
 Summary(pl):	Biblioteka renderuj±ca animacje flash
 Name:		swfdec
 Version:	0.3.5
-Release:	1
+Release:	2
 License:	GPL
 Group:		Libraries
 Source0:	http://www.schleef.org/swfdec/download/%{name}-%{version}.tar.gz
@@ -37,6 +37,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %if %{with gimp}
 %define		gimpplugindir	%(gimptool --gimpplugindir)/plug-ins
 %endif
+%define		_plugindir	%{_libdir}/browser-plugins
 
 %description
 Libswfdec is a library for rendering Flash animations. Currently it
@@ -90,17 +91,32 @@ SWF loading file filter for the GIMP.
 %description -n gimp-plugin-%{name} -l pl
 Filtr wczytuj±cy pliki SWF dla GIMP-a.
 
-%package -n mozilla-plugin-%{name}
-Summary:	Mozilla plugin for Flash rendering
-Summary(pl):	Wtyczka mozilli wu¶wietlaj±ca animacje flash
+%package -n browser-plugin-%{name}
+Summary:	Browser plugin for Flash rendering
+Summary(pl):	Wtyczka przegl±darki wy¶wietlaj±ca animacje Flash
 Group:		X11/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	browser-plugins(%{_target_base_arch})
+Obsoletes:	mozilla-plugin-%{name}
 
-%description -n mozilla-plugin-%{name}
-Mozilla plugin for rendering of Flash animations based on swfdec library.
+# use macro, otherwise extra LF inserted along with the ifarch
+%ifarch %{ix86} ppc sparc sparc64
+%define	browsers mozilla, mozilla-firefox, seamonkey, opera, konqueror
+%else
+%define	browsers mozilla, mozilla-firefox, seamonkey, konqueror
+%endif
 
-%description -n mozilla-plugin-%{name} -l pl
-Wtyczka mozilli wy¶wietlaj±ca animacje flash bazuj±ca na bibliotece swfdec.
+%description -n browser-plugin-%{name}
+Browser plugin for rendering of Flash animations based on swfdec
+library.
+
+Supported browsers: %{browsers}.
+
+%description -n browser-plugin-%{name} -l pl
+Wtyczka przegl±darki wy¶wietlaj±ca animacje Flash oparta na bibliotece
+swfdec.
+
+Obs³ugiwane przegl±darki: %{browsers}.
 
 %prep
 %setup -q
@@ -113,7 +129,7 @@ Wtyczka mozilli wy¶wietlaj±ca animacje flash bazuj±ca na bibliotece swfdec.
 %{__autoconf}
 %{__automake}
 %configure \
-	%{?!with_gstreamer:--disable-mozilla-plugin}
+	%{!?with_gstreamer:--disable-mozilla-plugin}
 	
 %{__make} \
 	gimpdir=%{gimpplugindir}
@@ -123,10 +139,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
+	plugindir=%{_plugindir} \
 	gimpdir=%{gimpplugindir} \
 	pkgconfigdir=%{_pkgconfigdir}
 
-rm -f $RPM_BUILD_ROOT%{_libdir}/mozilla/plugins/*.{a,la} \
+rm -f $RPM_BUILD_ROOT%{_plugindir}/*.{a,la} \
 	$RPM_BUILD_ROOT%{_libdir}/gtk-*/*/loaders/*.{a,la}
 
 %clean
@@ -134,6 +151,43 @@ rm -rf $RPM_BUILD_ROOT
 
 %post	-p /sbin/ldconfig
 %postun	-p /sbin/ldconfig
+
+%triggerin -n browser-plugin-%{name} -- mozilla-firefox
+%nsplugin_install -d %{_libdir}/mozilla-firefox/plugins libswfdecmozilla.so
+
+%triggerun -n browser-plugin-%{name} -- mozilla-firefox
+%nsplugin_uninstall -d %{_libdir}/mozilla-firefox/plugins libswfdecmozilla.so
+
+%triggerin -n browser-plugin-%{name} -- mozilla
+%nsplugin_install -d %{_libdir}/mozilla/plugins libswfdecmozilla.so
+
+%triggerun -n browser-plugin-%{name} -- mozilla
+%nsplugin_uninstall -d %{_libdir}/mozilla/plugins libswfdecmozilla.so
+
+%ifarch %{ix86} ppc sparc sparc64
+%triggerin -n browser-plugin-%{name} -- opera
+%nsplugin_install -d %{_libdir}/opera/plugins libswfdecmozilla.so
+
+%triggerun -n browser-plugin-%{name} -- opera
+%nsplugin_uninstall -d %{_libdir}/opera/plugins libswfdecmozilla.so
+%endif
+
+%triggerin -n browser-plugin-%{name} -- konqueror
+%nsplugin_install -d %{_libdir}/kde3/plugins/konqueror libswfdecmozilla.so
+
+%triggerun -n browser-plugin-%{name} -- konqueror
+%nsplugin_uninstall -d %{_libdir}/kde3/plugins/konqueror libswfdecmozilla.so
+
+%triggerin -n browser-plugin-%{name} -- seamonkey
+%nsplugin_install -d %{_libdir}/seamonkey/plugins libswfdecmozilla.so
+
+%triggerun -n browser-plugin-%{name} -- seamonkey
+%nsplugin_uninstall -d %{_libdir}/seamonkey/plugins libswfdecmozilla.so
+
+# as rpm removes the old obsoleted package files after the triggers
+# above are ran, add another trigger to make the links there.
+%triggerpostun -- mozilla-plugin-swfdec
+%nsplugin_install -f -d %{_libdir}/mozilla/plugins libswfdecmozilla.so
 
 %files
 %defattr(644,root,root,755)
@@ -160,7 +214,7 @@ rm -rf $RPM_BUILD_ROOT
 %endif
 
 %if %{with gstreamer}
-%files -n mozilla-plugin-%{name}
+%files -n browser-plugin-%{name}
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/mozilla/plugins/libswfdecmozilla.so
+%attr(755,root,root) %{_plugindir}/libswfdecmozilla.so
 %endif
