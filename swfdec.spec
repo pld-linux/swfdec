@@ -34,7 +34,7 @@ Obsoletes:	libswfdec0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %if %{with gimp}
-%define		gimpplugindir	%(gimptool --gimpplugindir)/plug-ins
+%define		gimpplugindir	%(gimptool --gimpplugindir 2>/dev/null)/plug-ins
 %endif
 
 %description
