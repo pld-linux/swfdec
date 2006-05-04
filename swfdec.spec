@@ -1,6 +1,5 @@
 # Conditional build:
-%bcond_without	gstreamer	# build without gstreamer/mozilla plugin
-				# (for bootstrap)
+%bcond_without	gstreamer	# build without gstreamer/mozilla plugin (for bootstrap)
 %bcond_without	gimp		# don't build gimp plugin
 #
 Summary:	Flash animations redering library
@@ -35,8 +34,9 @@ BuildRequires:	zlib-devel >= 1.1.4
 Obsoletes:	libswfdec0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-
-%{?with_gimp:%define		gimpplugindir	%(gimptool --gimpplugindir)/plug-ins}
+%if %{with gimp}
+%define		gimpplugindir	%(gimptool --gimpplugindir)/plug-ins
+%endif
 
 %description
 Libswfdec is a library for rendering Flash animations. Currently it
