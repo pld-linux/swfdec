@@ -1,34 +1,43 @@
+# Conditional build:
+%bcond_without	gstreamer	# build without gstreamer/mozilla plugin (for bootstrap)
+%bcond_without	gimp		# don't build gimp plugin
+#
 Summary:	Flash animations redering library
 Summary(pl):	Biblioteka renderuj±ca animacje flash
 Name:		swfdec
-Version:	0.3.4
-Release:	1
+Version:	0.3.5
+Release:	2
 License:	GPL
 Group:		Libraries
 Source0:	http://www.schleef.org/swfdec/download/%{name}-%{version}.tar.gz
-# Source0-md5:	a307a12e6792f9c26c2f7d7149580d29
+# Source0-md5:	cc40397d7784efee549fb7853b01cac3
 Patch0:		%{name}-configure.patch
 URL:		http://www.schleef.org/swfdec/
 BuildRequires:	SDL-devel >= 1.2.5
 BuildRequires:	autoconf >= 2.58
 BuildRequires:	automake >= 1.6
-BuildRequires:	gimp-devel >= 1:2.0.0
+%{?with_gimp:BuildRequires:	gimp-devel >= 1:2.0.0}
+%if %{with gstreamer}
 BuildRequires:	gstreamer-devel >= 0.8.0
 BuildRequires:	gstreamer-GConf-devel >= 0.8.0
 # gstreamer-interfaces-0.8
 BuildRequires:	gstreamer-plugins-devel >= 0.8.0
+%endif
 BuildRequires:	gtk+2-devel >= 1:2.1.2
 BuildRequires:	libart_lgpl-devel >= 2.0
 BuildRequires:	libmad-devel >= 0.14.2b
 BuildRequires:	liboil-devel >= 0.3.0
 BuildRequires:	libtool
-BuildRequires:	mozilla-devel >= 2:1.0
+%{?with_gstreamer:BuildRequires:	mozilla-devel >= 2:1.0}
 BuildRequires:	pkgconfig
 BuildRequires:	zlib-devel >= 1.1.4
 Obsoletes:	libswfdec0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+%if %{with gimp}
 %define		gimpplugindir	%(gimptool --gimpplugindir)/plug-ins
+%endif
+%define		_plugindir	%{_libdir}/browser-plugins
 
 %description
 Libswfdec is a library for rendering Flash animations. Currently it
@@ -82,17 +91,32 @@ SWF loading file filter for the GIMP.
 %description -n gimp-plugin-%{name} -l pl
 Filtr wczytuj±cy pliki SWF dla GIMP-a.
 
-%package -n mozilla-plugin-%{name}
-Summary:	Mozilla plugin for Flash rendering
-Summary(pl):	Wtyczka mozilli wu¶wietlaj±ca animacje flash
+%package -n browser-plugin-%{name}
+Summary:	Browser plugin for Flash rendering
+Summary(pl):	Wtyczka przegl±darki wy¶wietlaj±ca animacje Flash
 Group:		X11/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	browser-plugins(%{_target_base_arch})
+Obsoletes:	mozilla-plugin-%{name}
 
-%description -n mozilla-plugin-%{name}
-Mozilla plugin for rendering of Flash animations based on swfdec library.
+# use macro, otherwise extra LF inserted along with the ifarch
+%ifarch %{ix86} ppc sparc sparc64
+%define	browsers mozilla, mozilla-firefox, seamonkey, opera, konqueror
+%else
+%define	browsers mozilla, mozilla-firefox, seamonkey, konqueror
+%endif
 
-%description -n mozilla-plugin-%{name} -l pl
-Wtyczka mozilli wy¶wietlaj±ca animacje flash bazuj±ca na bibliotece swfdec.
+%description -n browser-plugin-%{name}
+Browser plugin for rendering of Flash animations based on swfdec
+library.
+
+Supported browsers: %{browsers}.
+
+%description -n browser-plugin-%{name} -l pl
+Wtyczka przegl±darki wy¶wietlaj±ca animacje Flash oparta na bibliotece
+swfdec.
+
+Obs³ugiwane przegl±darki: %{browsers}.
 
 %prep
 %setup -q
@@ -104,7 +128,9 @@ Wtyczka mozilli wy¶wietlaj±ca animacje flash bazuj±ca na bibliotece swfdec.
 %{__autoheader}
 %{__autoconf}
 %{__automake}
-%configure
+%configure \
+	%{!?with_gstreamer:--disable-mozilla-plugin}
+	
 %{__make} \
 	gimpdir=%{gimpplugindir}
 
@@ -113,10 +139,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
+	plugindir=%{_plugindir} \
 	gimpdir=%{gimpplugindir} \
 	pkgconfigdir=%{_pkgconfigdir}
 
-rm -f $RPM_BUILD_ROOT%{_libdir}/mozilla/plugins/*.{a,la} \
+rm -f $RPM_BUILD_ROOT%{_plugindir}/*.{a,la} \
 	$RPM_BUILD_ROOT%{_libdir}/gtk-*/*/loaders/*.{a,la}
 
 %clean
@@ -124,6 +151,43 @@ rm -rf $RPM_BUILD_ROOT
 
 %post	-p /sbin/ldconfig
 %postun	-p /sbin/ldconfig
+
+%triggerin -n browser-plugin-%{name} -- mozilla-firefox
+%nsplugin_install -d %{_libdir}/mozilla-firefox/plugins libswfdecmozilla.so
+
+%triggerun -n browser-plugin-%{name} -- mozilla-firefox
+%nsplugin_uninstall -d %{_libdir}/mozilla-firefox/plugins libswfdecmozilla.so
+
+%triggerin -n browser-plugin-%{name} -- mozilla
+%nsplugin_install -d %{_libdir}/mozilla/plugins libswfdecmozilla.so
+
+%triggerun -n browser-plugin-%{name} -- mozilla
+%nsplugin_uninstall -d %{_libdir}/mozilla/plugins libswfdecmozilla.so
+
+%ifarch %{ix86} ppc sparc sparc64
+%triggerin -n browser-plugin-%{name} -- opera
+%nsplugin_install -d %{_libdir}/opera/plugins libswfdecmozilla.so
+
+%triggerun -n browser-plugin-%{name} -- opera
+%nsplugin_uninstall -d %{_libdir}/opera/plugins libswfdecmozilla.so
+%endif
+
+%triggerin -n browser-plugin-%{name} -- konqueror
+%nsplugin_install -d %{_libdir}/kde3/plugins/konqueror libswfdecmozilla.so
+
+%triggerun -n browser-plugin-%{name} -- konqueror
+%nsplugin_uninstall -d %{_libdir}/kde3/plugins/konqueror libswfdecmozilla.so
+
+%triggerin -n browser-plugin-%{name} -- seamonkey
+%nsplugin_install -d %{_libdir}/seamonkey/plugins libswfdecmozilla.so
+
+%triggerun -n browser-plugin-%{name} -- seamonkey
+%nsplugin_uninstall -d %{_libdir}/seamonkey/plugins libswfdecmozilla.so
+
+# as rpm removes the old obsoleted package files after the triggers
+# above are ran, add another trigger to make the links there.
+%triggerpostun -- mozilla-plugin-swfdec
+%nsplugin_install -f -d %{_libdir}/mozilla/plugins libswfdecmozilla.so
 
 %files
 %defattr(644,root,root,755)
@@ -143,10 +207,14 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libswfdec-*.a
 
+%if %{with gimp}
 %files -n gimp-plugin-%{name}
 %defattr(644,root,root,755)
 %attr(755,root,root) %{gimpplugindir}/swf
+%endif
 
-%files -n mozilla-plugin-%{name}
+%if %{with gstreamer}
+%files -n browser-plugin-%{name}
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/mozilla/plugins/libswfdecmozilla.so
+%attr(755,root,root) %{_plugindir}/libswfdecmozilla.so
+%endif
