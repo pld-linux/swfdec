@@ -1,41 +1,40 @@
+#
 # Conditional build:
 %bcond_without	gstreamer	# build without gstreamer/mozilla plugin (for bootstrap)
 %bcond_without	gimp		# don't build gimp plugin
+%bcond_with	libart		# use libarg_lgpl instead of cairo
 #
 Summary:	Flash animations redering library
 Summary(pl):	Biblioteka renderuj±ca animacje flash
 Name:		swfdec
-Version:	0.3.5
+Version:	0.3.6
 Release:	2
 License:	GPL
 Group:		Libraries
 Source0:	http://www.schleef.org/swfdec/download/%{name}-%{version}.tar.gz
-# Source0-md5:	cc40397d7784efee549fb7853b01cac3
-Patch0:		%{name}-configure.patch
+# Source0-md5:	bcfca3a8ce1d524ebf4d11fd511dedb8
 URL:		http://www.schleef.org/swfdec/
-BuildRequires:	SDL-devel >= 1.2.5
 BuildRequires:	autoconf >= 2.58
 BuildRequires:	automake >= 1.6
+%{!?with_libart:BuildRequires:	cairo-devel >= 0.4.0}
 %{?with_gimp:BuildRequires:	gimp-devel >= 1:2.0.0}
 %if %{with gstreamer}
-BuildRequires:	gstreamer-devel >= 0.8.0
-BuildRequires:	gstreamer-GConf-devel >= 0.8.0
-# gstreamer-interfaces-0.8
-BuildRequires:	gstreamer-plugins-devel >= 0.8.0
+BuildRequires:	gstreamer-devel >= 0.10.0
+BuildRequires:	gstreamer-plugins-base-devel >= 0.10.0
 %endif
 BuildRequires:	gtk+2-devel >= 1:2.1.2
-BuildRequires:	libart_lgpl-devel >= 2.0
+%{?with_libart:BuildRequires:	libart_lgpl-devel >= 2.0}
 BuildRequires:	libmad-devel >= 0.14.2b
-BuildRequires:	liboil-devel >= 0.3.0
+BuildRequires:	liboil-devel >= 0.3.1.1
 BuildRequires:	libtool
-%{?with_gstreamer:BuildRequires:	mozilla-devel >= 2:1.0}
+BuildRequires:	mozilla-devel >= 2:1.0
 BuildRequires:	pkgconfig
 BuildRequires:	zlib-devel >= 1.1.4
 Obsoletes:	libswfdec0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %if %{with gimp}
-%define		gimpplugindir	%(gimptool --gimpplugindir)/plug-ins
+%define		gimpplugindir	%(gimptool --gimpplugindir 2>/dev/null)/plug-ins
 %endif
 %define		_plugindir	%{_libdir}/browser-plugins
 
@@ -54,10 +53,11 @@ Summary:	Header file required to build programs using swfdec library
 Summary(pl):	Pliki nag³ówkowe wymagane przez programy u¿ywaj±ce swfdec
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
+%{!?with_libart:Requires:	cairo-devel >= 0.4.0}
 Requires:	glib2-devel >= 2.0.0
-Requires:	libart_lgpl-devel >= 2.0
+%{?with_libart:Requires:	libart_lgpl-devel >= 2.0}
 Requires:	libmad-devel >= 0.14.2b
-Requires:	liboil-devel >= 0.3.0
+Requires:	liboil-devel >= 0.3.1.1
 Obsoletes:	libswfdec0-devel
 
 %description devel
@@ -120,7 +120,6 @@ Obs³ugiwane przegl±darki: %{browsers}.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %{__libtoolize}
@@ -129,8 +128,9 @@ Obs³ugiwane przegl±darki: %{browsers}.
 %{__autoconf}
 %{__automake}
 %configure \
-	%{!?with_gstreamer:--disable-mozilla-plugin}
-	
+	%{!?with_gstreamer:--disable-mozilla-plugin} \
+	%{?with_libart:--with-backend=libart}
+
 %{__make} \
 	gimpdir=%{gimpplugindir}
 
@@ -191,8 +191,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc TODO README Change*
-%attr(755,root,root) %{_bindir}/*
+%doc AUTHORS ChangeLog NEWS README TODO
+%if %{with gstreamer}
+# TODO: move to base browser plugin package
+%attr(755,root,root) %{_bindir}/swfdec-mozilla-player
+%endif
 %attr(755,root,root) %{_libdir}/libswfdec-*.so.*.*
 %attr(755,root,root) %{_libdir}/gtk-2.0/2.*/loaders/*.so
 
@@ -213,8 +216,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{gimpplugindir}/swf
 %endif
 
-%if %{with gstreamer}
 %files -n browser-plugin-%{name}
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_plugindir}/libswfdecmozilla.so
-%endif
