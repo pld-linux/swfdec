@@ -8,7 +8,7 @@ Summary:	Flash animations redering library
 Summary(pl):	Biblioteka renderuj±ca animacje flash
 Name:		swfdec
 Version:	0.3.6
-Release:	2
+Release:	4
 License:	GPL
 Group:		Libraries
 Source0:	http://www.schleef.org/swfdec/download/%{name}-%{version}.tar.gz
@@ -16,18 +16,18 @@ Source0:	http://www.schleef.org/swfdec/download/%{name}-%{version}.tar.gz
 URL:		http://www.schleef.org/swfdec/
 BuildRequires:	autoconf >= 2.58
 BuildRequires:	automake >= 1.6
-%{!?with_libart:BuildRequires:	cairo-devel >= 0.4.0}
-%{?with_gimp:BuildRequires:	gimp-devel >= 1:2.0.0}
+%{!?with_libart:BuildRequires:	cairo-devel >= 1.1.10}
+%{?with_gimp:BuildRequires:	gimp-devel >= 1:2.3.9}
 %if %{with gstreamer}
-BuildRequires:	gstreamer-devel >= 0.10.0
-BuildRequires:	gstreamer-plugins-base-devel >= 0.10.0
+BuildRequires:	gstreamer-devel >= 0.10.8
+BuildRequires:	gstreamer-plugins-base-devel >= 0.10.7
 %endif
-BuildRequires:	gtk+2-devel >= 1:2.1.2
+BuildRequires:	gtk+2-devel >= 2:2.9.3
 %{?with_libart:BuildRequires:	libart_lgpl-devel >= 2.0}
 BuildRequires:	libmad-devel >= 0.14.2b
-BuildRequires:	liboil-devel >= 0.3.1.1
+BuildRequires:	liboil-devel >= 0.3.9
 BuildRequires:	libtool
-BuildRequires:	mozilla-devel >= 2:1.0
+BuildRequires:	mozilla-firefox-devel >= 1.5.0.4
 BuildRequires:	pkgconfig
 BuildRequires:	zlib-devel >= 1.1.4
 Obsoletes:	libswfdec0
@@ -53,11 +53,11 @@ Summary:	Header file required to build programs using swfdec library
 Summary(pl):	Pliki nag³ówkowe wymagane przez programy u¿ywaj±ce swfdec
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-%{!?with_libart:Requires:	cairo-devel >= 0.4.0}
-Requires:	glib2-devel >= 2.0.0
+%{!?with_libart:Requires:	cairo-devel >= 1.1.10}
+Requires:	glib2-devel >= 1:2.11.4
 %{?with_libart:Requires:	libart_lgpl-devel >= 2.0}
 Requires:	libmad-devel >= 0.14.2b
-Requires:	liboil-devel >= 0.3.1.1
+Requires:	liboil-devel >= 0.3.9
 Obsoletes:	libswfdec0-devel
 
 %description devel
