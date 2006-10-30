@@ -8,7 +8,7 @@ Summary:	Flash animations redering library
 Summary(pl):	Biblioteka renderuj±ca animacje flash
 Name:		swfdec
 Version:	0.3.6
-Release:	5
+Release:	6
 License:	GPL
 Group:		Libraries
 Source0:	http://www.schleef.org/swfdec/download/%{name}-%{version}.tar.gz
@@ -101,7 +101,7 @@ Obsoletes:	mozilla-plugin-%{name}
 
 # use macro, otherwise extra LF inserted along with the ifarch
 %ifarch %{ix86} ppc sparc sparc64
-%define	browsers mozilla, mozilla-firefox, seamonkey, opera, konqueror
+%define	browsers mozilla, mozilla-firefox, mozilla-firefox-bin, seamonkey, opera, konqueror
 %else
 %define	browsers mozilla, mozilla-firefox, seamonkey, konqueror
 %endif
@@ -158,6 +158,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %triggerun -n browser-plugin-%{name} -- mozilla-firefox
 %nsplugin_uninstall -d %{_libdir}/mozilla-firefox/plugins libswfdecmozilla.so
+
+%triggerin -n browser-plugin-%{name} -- mozilla-firefox-bin
+%nsplugin_install -d %{_libdir}/mozilla-firefox-bin/plugins libswfdecmozilla.so
+
+%triggerun -n browser-plugin-%{name} -- mozilla-firefox-bin
+%nsplugin_uninstall -d %{_libdir}/mozilla-firefox-bin/plugins libswfdecmozilla.so
 
 %triggerin -n browser-plugin-%{name} -- mozilla
 %nsplugin_install -d %{_libdir}/mozilla/plugins libswfdecmozilla.so
