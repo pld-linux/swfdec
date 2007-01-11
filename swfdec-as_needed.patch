@@ -1,0 +1,11 @@
+--- swfdec-0.3.6/libswfdec/jpeg/Makefile.am.orig	2007-01-11 08:10:33.000000000 +0000
++++ swfdec-0.3.6/libswfdec/jpeg/Makefile.am	2007-01-11 08:12:03.000000000 +0000
+@@ -4,7 +4,7 @@
+ 
+ libjpeg_la_SOURCES = jpeg.c huffman.c jpeg_rgb_decoder.c
+ libjpeg_la_CFLAGS = $(GLOBAL_CFLAGS) $(SWF_CFLAGS) $(GLIB_CFLAGS) $(LIBOIL_CFLAGS)
+-libjpeg_la_LDFLAGS = -lm
++libjpeg_la_LDFLAGS = -lm $(LIBOIL_LIBS)
+ 
+ noinst_HEADERS = bits.h huffman.h jpeg.h jpeg_debug.h \
+ 	jpeg_internal.h jpeg_rgb_decoder.h jpeg_rgb_internal.h
