@@ -13,6 +13,7 @@ License:	GPL
 Group:		Libraries
 Source0:	http://www.schleef.org/swfdec/download/%{name}-%{version}.tar.gz
 # Source0-md5:	bcfca3a8ce1d524ebf4d11fd511dedb8
+Patch0:		%{name}-as_needed.patch
 URL:		http://www.schleef.org/swfdec/
 BuildRequires:	autoconf >= 2.58
 BuildRequires:	automake >= 1.6
@@ -120,9 +121,9 @@ Obs³ugiwane przegl±darki: %{browsers}.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
-# breaks with --as-needed
 %{__libtoolize}
 %{__aclocal}
 %{__autoheader}
