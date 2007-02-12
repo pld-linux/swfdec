@@ -5,7 +5,7 @@
 %bcond_with	libart		# use libarg_lgpl instead of cairo
 #
 Summary:	Flash animations redering library
-Summary(pl):	Biblioteka renderuj±ca animacje flash
+Summary(pl.UTF-8):   Biblioteka renderujÄ…ca animacje flash
 Name:		swfdec
 Version:	0.3.6
 Release:	6
@@ -44,14 +44,14 @@ Libswfdec is a library for rendering Flash animations. Currently it
 handles most Flash 3 animations and some Flash 4. No interactivity is
 supported yet.
 
-%description -l pl
+%description -l pl.UTF-8
 Biblioteka libswfdec przeznaczona jest do odtwarzania animacji flash.
-Obecnie potrafi wy¶wietliæ wiêkszo¶æ animacji Flash 3 i czê¶æ Flash 4.
-Interaktywno¶æ nie jest jeszcze obs³ugiwana.
+Obecnie potrafi wyÅ›wietliÄ‡ wiÄ™kszoÅ›Ä‡ animacji Flash 3 i czÄ™Å›Ä‡ Flash 4.
+InteraktywnoÅ›Ä‡ nie jest jeszcze obsÅ‚ugiwana.
 
 %package devel
 Summary:	Header file required to build programs using swfdec library
-Summary(pl):	Pliki nag³ówkowe wymagane przez programy u¿ywaj±ce swfdec
+Summary(pl.UTF-8):   Pliki nagÅ‚Ã³wkowe wymagane przez programy uÅ¼ywajÄ…ce swfdec
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 %{!?with_libart:Requires:	cairo-devel >= 1.2.0}
@@ -64,37 +64,37 @@ Obsoletes:	libswfdec0-devel
 %description devel
 Header files required to build programs using swfdec library.
 
-%description devel -l pl
-Pliki nag³ówkowe niezbêdne do kompilacji programów korzystaj±cych z
+%description devel -l pl.UTF-8
+Pliki nagÅ‚Ã³wkowe niezbÄ™dne do kompilacji programÃ³w korzystajÄ…cych z
 biblioteki swfdec.
 
 %package static
 Summary:	Static swfdec library
-Summary(pl):	Statyczna biblioteka swfdec
+Summary(pl.UTF-8):   Statyczna biblioteka swfdec
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
 Static swfdec library.
 
-%description static -l pl
+%description static -l pl.UTF-8
 Statyczna biblioteka swfdec.
 
 %package -n gimp-plugin-%{name}
 Summary:	SWF loading file filter for the GIMP
-Summary(pl):	Filtr wczytuj±cy pliki SWF dla GIMP-a
+Summary(pl.UTF-8):   Filtr wczytujÄ…cy pliki SWF dla GIMP-a
 Group:		X11/Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description -n gimp-plugin-%{name}
 SWF loading file filter for the GIMP.
 
-%description -n gimp-plugin-%{name} -l pl
-Filtr wczytuj±cy pliki SWF dla GIMP-a.
+%description -n gimp-plugin-%{name} -l pl.UTF-8
+Filtr wczytujÄ…cy pliki SWF dla GIMP-a.
 
 %package -n browser-plugin-%{name}
 Summary:	Browser plugin for Flash rendering
-Summary(pl):	Wtyczka przegl±darki wy¶wietlaj±ca animacje Flash
+Summary(pl.UTF-8):   Wtyczka przeglÄ…darki wyÅ›wietlajÄ…ca animacje Flash
 Group:		X11/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	browser-plugins(%{_target_base_arch})
@@ -113,11 +113,11 @@ library.
 
 Supported browsers: %{browsers}.
 
-%description -n browser-plugin-%{name} -l pl
-Wtyczka przegl±darki wy¶wietlaj±ca animacje Flash oparta na bibliotece
+%description -n browser-plugin-%{name} -l pl.UTF-8
+Wtyczka przeglÄ…darki wyÅ›wietlajÄ…ca animacje Flash oparta na bibliotece
 swfdec.
 
-Obs³ugiwane przegl±darki: %{browsers}.
+ObsÅ‚ugiwane przeglÄ…darki: %{browsers}.
 
 %prep
 %setup -q
