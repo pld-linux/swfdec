@@ -5,7 +5,7 @@
 %bcond_with	libart		# use libarg_lgpl instead of cairo
 #
 Summary:	Flash animations redering library
-Summary(pl.UTF-8):   Biblioteka renderująca animacje flash
+Summary(pl.UTF-8):	Biblioteka renderująca animacje flash
 Name:		swfdec
 Version:	0.3.6
 Release:	6
@@ -51,7 +51,7 @@ Interaktywność nie jest jeszcze obsługiwana.
 
 %package devel
 Summary:	Header file required to build programs using swfdec library
-Summary(pl.UTF-8):   Pliki nagłówkowe wymagane przez programy używające swfdec
+Summary(pl.UTF-8):	Pliki nagłówkowe wymagane przez programy używające swfdec
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 %{!?with_libart:Requires:	cairo-devel >= 1.2.0}
@@ -70,7 +70,7 @@ biblioteki swfdec.
 
 %package static
 Summary:	Static swfdec library
-Summary(pl.UTF-8):   Statyczna biblioteka swfdec
+Summary(pl.UTF-8):	Statyczna biblioteka swfdec
 Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
@@ -82,7 +82,7 @@ Statyczna biblioteka swfdec.
 
 %package -n gimp-plugin-%{name}
 Summary:	SWF loading file filter for the GIMP
-Summary(pl.UTF-8):   Filtr wczytujący pliki SWF dla GIMP-a
+Summary(pl.UTF-8):	Filtr wczytujący pliki SWF dla GIMP-a
 Group:		X11/Libraries
 Requires:	%{name} = %{version}-%{release}
 
@@ -94,7 +94,7 @@ Filtr wczytujący pliki SWF dla GIMP-a.
 
 %package -n browser-plugin-%{name}
 Summary:	Browser plugin for Flash rendering
-Summary(pl.UTF-8):   Wtyczka przeglądarki wyświetlająca animacje Flash
+Summary(pl.UTF-8):	Wtyczka przeglądarki wyświetlająca animacje Flash
 Group:		X11/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	browser-plugins(%{_target_base_arch})
