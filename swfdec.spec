@@ -1,6 +1,3 @@
-# TODO
-# - use xulrunnerl
-#
 # Conditional build:
 %bcond_without	gstreamer	# build without swfdec-mozilla-player
 %bcond_without	gimp		# don't build gimp plugin
