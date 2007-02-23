@@ -16,6 +16,7 @@ Group:		Libraries
 Source0:	http://www.schleef.org/swfdec/download/%{name}-%{version}.tar.gz
 # Source0-md5:	bcfca3a8ce1d524ebf4d11fd511dedb8
 Patch0:		%{name}-as_needed.patch
+Patch1:		%{name}-xulrunner.patch
 URL:		http://www.schleef.org/swfdec/
 BuildRequires:	autoconf >= 2.58
 BuildRequires:	automake >= 1.6
@@ -114,6 +115,7 @@ swfdec.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__libtoolize}
@@ -125,7 +127,7 @@ swfdec.
 	%{!?with_gstreamer:--disable-mozilla-plugin} \
 	%{?with_libart:--with-backend=libart}
 
-%{__make} \
+%{__make} -j1 \
 	gimpdir=%{gimpplugindir}
 
 %install
