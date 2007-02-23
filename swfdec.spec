@@ -19,20 +19,20 @@ Patch0:		%{name}-as_needed.patch
 URL:		http://www.schleef.org/swfdec/
 BuildRequires:	autoconf >= 2.58
 BuildRequires:	automake >= 1.6
-%{!?with_libart:BuildRequires:	cairo-devel >= 1.2.0}
-%{?with_gimp:BuildRequires:	gimp-devel >= 1:2.3.10}
+%{!?with_libart:BuildRequires:	cairo-devel >= 0.4.0}
+%{?with_gimp:BuildRequires:	gimp-devel >= 1:2.0.0}
 %if %{with gstreamer}
-BuildRequires:	gstreamer-devel >= 0.10.8
-BuildRequires:	gstreamer-plugins-base-devel >= 0.10.8
+BuildRequires:	gstreamer-devel >= 0.10.0
+BuildRequires:	gstreamer-plugins-base-devel >= 0.10.0
 %endif
-BuildRequires:	gtk+2-devel >= 2:2.10.0
+BuildRequires:	gtk+2-devel >= 1:2.1.2
 %{?with_libart:BuildRequires:	libart_lgpl-devel >= 2.0}
 BuildRequires:	libmad-devel >= 0.14.2b
 BuildRequires:	liboil-devel >= 0.3.9
 BuildRequires:	libtool
-BuildRequires:	mozilla-firefox-devel >= 1.5.0.4
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.357
+BuildRequires:	xulrunner-devel
 BuildRequires:	zlib-devel >= 1.1.4
 Obsoletes:	libswfdec0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
