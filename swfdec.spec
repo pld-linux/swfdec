@@ -7,7 +7,7 @@ Summary:	Flash animations redering library
 Summary(pl):	Biblioteka renderuj±ca animacje flash
 Name:		swfdec
 Version:	0.3.6
-Release:	7
+Release:	8
 License:	GPL
 Group:		Libraries
 Source0:	http://www.schleef.org/swfdec/download/%{name}-%{version}.tar.gz
@@ -54,8 +54,8 @@ Summary:	Header file required to build programs using swfdec library
 Summary(pl):	Pliki nag³ówkowe wymagane przez programy u¿ywaj±ce swfdec
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-%{!?with_libart:Requires:	cairo-devel >= 1.2.0}
-Requires:	glib2-devel >= 1:2.12.0
+%{!?with_libart:Requires:	cairo-devel >= 0.4.0}
+Requires:	glib2-devel >= 1:2.10.0
 %{?with_libart:Requires:	libart_lgpl-devel >= 2.0}
 Requires:	libmad-devel >= 0.14.2b
 Requires:	liboil-devel >= 0.3.9
