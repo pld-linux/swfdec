@@ -1,3 +1,5 @@
+# TODO
+# - use xulrunnerl
 #
 # Conditional build:
 %bcond_without	gstreamer	# build without swfdec-mozilla-player
@@ -30,6 +32,7 @@ BuildRequires:	liboil-devel >= 0.3.9
 BuildRequires:	libtool
 BuildRequires:	mozilla-firefox-devel >= 1.5.0.4
 BuildRequires:	pkgconfig
+BuildRequires:	rpmbuild(macros) >= 1.357
 BuildRequires:	zlib-devel >= 1.1.4
 Obsoletes:	libswfdec0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -37,7 +40,6 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %if %{with gimp}
 %define		gimpplugindir	%(gimptool --gimpplugindir 2>/dev/null)/plug-ins
 %endif
-%define		_plugindir	%{_libdir}/browser-plugins
 
 %description
 Libswfdec is a library for rendering Flash animations. Currently it
@@ -97,27 +99,17 @@ Summary:	Browser plugin for Flash rendering
 Summary(pl.UTF-8):	Wtyczka przeglądarki wyświetlająca animacje Flash
 Group:		X11/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	browser-plugins >= 2.0
 Requires:	browser-plugins(%{_target_base_arch})
-Obsoletes:	mozilla-plugin-%{name}
-
-# use macro, otherwise extra LF inserted along with the ifarch
-%ifarch %{ix86} ppc sparc sparc64
-%define	browsers mozilla, mozilla-firefox, mozilla-firefox-bin, seamonkey, opera, konqueror
-%else
-%define	browsers mozilla, mozilla-firefox, seamonkey, konqueror
-%endif
+Obsoletes:	mozilla-plugin-swfdec
 
 %description -n browser-plugin-%{name}
 Browser plugin for rendering of Flash animations based on swfdec
 library.
 
-Supported browsers: %{browsers}.
-
 %description -n browser-plugin-%{name} -l pl.UTF-8
 Wtyczka przeglądarki wyświetlająca animacje Flash oparta na bibliotece
 swfdec.
-
-Obsługiwane przeglądarki: %{browsers}.
 
 %prep
 %setup -q
@@ -141,11 +133,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
-	plugindir=%{_plugindir} \
+	plugindir=%{_browserpluginsdir} \
 	gimpdir=%{gimpplugindir} \
 	pkgconfigdir=%{_pkgconfigdir}
 
-rm -f $RPM_BUILD_ROOT%{_plugindir}/*.{a,la} \
+rm -f $RPM_BUILD_ROOT%{_browserpluginsdir}/*.{a,la} \
 	$RPM_BUILD_ROOT%{_libdir}/gtk-*/*/loaders/*.{a,la}
 
 %clean
@@ -154,48 +146,13 @@ rm -rf $RPM_BUILD_ROOT
 %post	-p /sbin/ldconfig
 %postun	-p /sbin/ldconfig
 
-%triggerin -n browser-plugin-%{name} -- mozilla-firefox
-%nsplugin_install -d %{_libdir}/mozilla-firefox/plugins libswfdecmozilla.so
+%post -n browser-plugin-%{name}
+%update_browser_plugins
 
-%triggerun -n browser-plugin-%{name} -- mozilla-firefox
-%nsplugin_uninstall -d %{_libdir}/mozilla-firefox/plugins libswfdecmozilla.so
-
-%triggerin -n browser-plugin-%{name} -- mozilla-firefox-bin
-%nsplugin_install -d %{_libdir}/mozilla-firefox-bin/plugins libswfdecmozilla.so
-
-%triggerun -n browser-plugin-%{name} -- mozilla-firefox-bin
-%nsplugin_uninstall -d %{_libdir}/mozilla-firefox-bin/plugins libswfdecmozilla.so
-
-%triggerin -n browser-plugin-%{name} -- mozilla
-%nsplugin_install -d %{_libdir}/mozilla/plugins libswfdecmozilla.so
-
-%triggerun -n browser-plugin-%{name} -- mozilla
-%nsplugin_uninstall -d %{_libdir}/mozilla/plugins libswfdecmozilla.so
-
-%ifarch %{ix86} ppc sparc sparc64
-%triggerin -n browser-plugin-%{name} -- opera
-%nsplugin_install -d %{_libdir}/opera/plugins libswfdecmozilla.so
-
-%triggerun -n browser-plugin-%{name} -- opera
-%nsplugin_uninstall -d %{_libdir}/opera/plugins libswfdecmozilla.so
-%endif
-
-%triggerin -n browser-plugin-%{name} -- konqueror
-%nsplugin_install -d %{_libdir}/kde3/plugins/konqueror libswfdecmozilla.so
-
-%triggerun -n browser-plugin-%{name} -- konqueror
-%nsplugin_uninstall -d %{_libdir}/kde3/plugins/konqueror libswfdecmozilla.so
-
-%triggerin -n browser-plugin-%{name} -- seamonkey
-%nsplugin_install -d %{_libdir}/seamonkey/plugins libswfdecmozilla.so
-
-%triggerun -n browser-plugin-%{name} -- seamonkey
-%nsplugin_uninstall -d %{_libdir}/seamonkey/plugins libswfdecmozilla.so
-
-# as rpm removes the old obsoleted package files after the triggers
-# above are ran, add another trigger to make the links there.
-%triggerpostun -- mozilla-plugin-swfdec
-%nsplugin_install -f -d %{_libdir}/mozilla/plugins libswfdecmozilla.so
+%postun -n browser-plugin-%{name}
+if [ "$1" = 0 ]; then
+	%update_browser_plugins
+fi
 
 %files
 %defattr(644,root,root,755)
@@ -226,4 +183,4 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n browser-plugin-%{name}
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_plugindir}/libswfdecmozilla.so
+%attr(755,root,root) %{_browserpluginsdir}/libswfdecmozilla.so
