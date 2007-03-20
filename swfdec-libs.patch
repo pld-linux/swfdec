@@ -1,0 +1,18 @@
+--- swfdec-0.4.2/libswfdec/jpeg/Makefile.am.orig	2006-12-26 14:40:04.000000000 +0000
++++ swfdec-0.4.2/libswfdec/jpeg/Makefile.am	2007-03-20 12:22:11.000000000 +0000
+@@ -15,11 +15,11 @@
+ 
+ jpeg_test_SOURCES = test.c
+ jpeg_test_CFLAGS = $(GLIB_CFLAGS)
+-jpeg_test_LDFLAGS = -lm $(LIBOIL_LIBS)
+-jpeg_test_LDADD = libjpeg.la $(GLIB_LIBS)
++jpeg_test_LDFLAGS = -lm
++jpeg_test_LDADD = libjpeg.la $(GLIB_LIBS) $(LIBOIL_LIBS)
+ 
+ jpeg_rgb_test_SOURCES = test_rgb.c
+ jpeg_rgb_test_CFLAGS = $(GLIB_CFLAGS)
+-jpeg_rgb_test_LDFLAGS = -lm $(LIBOIL_LIBS)
+-jpeg_rgb_test_LDADD = libjpeg.la $(GLIB_LIBS)
++jpeg_rgb_test_LDFLAGS = -lm
++jpeg_rgb_test_LDADD = libjpeg.la $(GLIB_LIBS) $(LIBOIL_LIBS)
+ 
