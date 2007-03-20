@@ -1,30 +1,22 @@
-# Conditional build:
-%bcond_without	gstreamer	# build without swfdec-mozilla-player
-%bcond_without	gimp		# don't build gimp plugin
-%bcond_with	libart		# use libarg_lgpl instead of cairo
+#
+# todo:
+# - gtkdoc
 #
 Summary:	Flash animations redering library
 Summary(pl.UTF-8):	Biblioteka renderująca animacje flash
 Name:		swfdec
-Version:	0.3.6
-Release:	7
+Version:	0.4.2
+Release:	0.1
 License:	GPL
 Group:		Libraries
-Source0:	http://www.schleef.org/swfdec/download/%{name}-%{version}.tar.gz
-# Source0-md5:	bcfca3a8ce1d524ebf4d11fd511dedb8
-Patch0:		%{name}-as_needed.patch
-Patch1:		%{name}-xulrunner.patch
-URL:		http://www.schleef.org/swfdec/
+Source0:	http://swfdec.freedesktop.org/download/swfdec/0.4/%{name}-%{version}.tar.gz
+# Source0-md5:	851b8891299b68f84dc731441188b261
+Patch0:		%{name}-libs.patch
+URL:		http://swfdec.freedesktop.org/wiki/
 BuildRequires:	autoconf >= 2.58
 BuildRequires:	automake >= 1.6
-%{!?with_libart:BuildRequires:	cairo-devel >= 0.4.0}
-%{?with_gimp:BuildRequires:	gimp-devel >= 1:2.0.0}
-%if %{with gstreamer}
-BuildRequires:	gstreamer-devel >= 0.10.0
-BuildRequires:	gstreamer-plugins-base-devel >= 0.10.0
-%endif
+BuildRequires:	cairo-devel >= 0.4.0
 BuildRequires:	gtk+2-devel >= 1:2.1.2
-%{?with_libart:BuildRequires:	libart_lgpl-devel >= 2.0}
 BuildRequires:	libmad-devel >= 0.14.2b
 BuildRequires:	liboil-devel >= 0.3.9
 BuildRequires:	libtool
@@ -34,10 +26,6 @@ BuildRequires:	xulrunner-devel
 BuildRequires:	zlib-devel >= 1.1.4
 Obsoletes:	libswfdec0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%if %{with gimp}
-%define		gimpplugindir	%(gimptool --gimpplugindir 2>/dev/null)/plug-ins
-%endif
 
 %description
 Libswfdec is a library for rendering Flash animations. Currently it
@@ -54,9 +42,8 @@ Summary:	Header file required to build programs using swfdec library
 Summary(pl.UTF-8):	Pliki nagłówkowe wymagane przez programy używające swfdec
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-%{!?with_libart:Requires:	cairo-devel >= 1.2.0}
+Requires:	cairo-devel >= 1.2.0
 Requires:	glib2-devel >= 1:2.12.0
-%{?with_libart:Requires:	libart_lgpl-devel >= 2.0}
 Requires:	libmad-devel >= 0.14.2b
 Requires:	liboil-devel >= 0.3.9
 Obsoletes:	libswfdec0-devel
@@ -80,64 +67,26 @@ Static swfdec library.
 %description static -l pl.UTF-8
 Statyczna biblioteka swfdec.
 
-%package -n gimp-plugin-%{name}
-Summary:	SWF loading file filter for the GIMP
-Summary(pl.UTF-8):	Filtr wczytujący pliki SWF dla GIMP-a
-Group:		X11/Libraries
-Requires:	%{name} = %{version}-%{release}
-
-%description -n gimp-plugin-%{name}
-SWF loading file filter for the GIMP.
-
-%description -n gimp-plugin-%{name} -l pl.UTF-8
-Filtr wczytujący pliki SWF dla GIMP-a.
-
-%package -n browser-plugin-%{name}
-Summary:	Browser plugin for Flash rendering
-Summary(pl.UTF-8):	Wtyczka przeglądarki wyświetlająca animacje Flash
-Group:		X11/Libraries
-Requires:	%{name} = %{version}-%{release}
-Requires:	browser-plugins >= 2.0
-Requires:	browser-plugins(%{_target_base_arch})
-Obsoletes:	mozilla-plugin-swfdec
-
-%description -n browser-plugin-%{name}
-Browser plugin for rendering of Flash animations based on swfdec
-library.
-
-%description -n browser-plugin-%{name} -l pl.UTF-8
-Wtyczka przeglądarki wyświetlająca animacje Flash oparta na bibliotece
-swfdec.
-
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
 
 %build
 %{__libtoolize}
-%{__aclocal}
+%{__aclocal} -I m4
 %{__autoheader}
 %{__autoconf}
 %{__automake}
-%configure \
-	%{!?with_gstreamer:--disable-mozilla-plugin} \
-	%{?with_libart:--with-backend=libart}
 
-%{__make} -j1 \
-	gimpdir=%{gimpplugindir}
+%configure
+
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT \
-	plugindir=%{_browserpluginsdir} \
-	gimpdir=%{gimpplugindir} \
-	pkgconfigdir=%{_pkgconfigdir}
-
-rm -f $RPM_BUILD_ROOT%{_browserpluginsdir}/*.{a,la} \
-	$RPM_BUILD_ROOT%{_libdir}/gtk-*/*/loaders/*.{a,la}
+	DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -145,23 +94,10 @@ rm -rf $RPM_BUILD_ROOT
 %post	-p /sbin/ldconfig
 %postun	-p /sbin/ldconfig
 
-%post -n browser-plugin-%{name}
-%update_browser_plugins
-
-%postun -n browser-plugin-%{name}
-if [ "$1" = 0 ]; then
-	%update_browser_plugins
-fi
-
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog NEWS README TODO
-%if %{with gstreamer}
-# TODO: move to base browser plugin package
-%attr(755,root,root) %{_bindir}/swfdec-mozilla-player
-%endif
+%doc AUTHORS ChangeLog NEWS README
 %attr(755,root,root) %{_libdir}/libswfdec-*.so.*.*
-%attr(755,root,root) %{_libdir}/gtk-2.0/2.*/loaders/*.so
 
 %files devel
 %defattr(644,root,root,755)
@@ -173,13 +109,3 @@ fi
 %files static
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libswfdec-*.a
-
-%if %{with gimp}
-%files -n gimp-plugin-%{name}
-%defattr(644,root,root,755)
-%attr(755,root,root) %{gimpplugindir}/swf
-%endif
-
-%files -n browser-plugin-%{name}
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_browserpluginsdir}/libswfdecmozilla.so
