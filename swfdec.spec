@@ -22,7 +22,6 @@ BuildRequires:	liboil-devel >= 0.3.9
 BuildRequires:	libtool
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.357
-BuildRequires:	xulrunner-devel
 BuildRequires:	zlib-devel >= 1.1.4
 Obsoletes:	gimp-plugin-swfdec
 Obsoletes:	libswfdec0
