@@ -24,6 +24,7 @@ BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.357
 BuildRequires:	xulrunner-devel
 BuildRequires:	zlib-devel >= 1.1.4
+Obsoletes:	gimp-plugin-swfdec
 Obsoletes:	libswfdec0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
