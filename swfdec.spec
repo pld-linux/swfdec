@@ -1,7 +1,3 @@
-#
-# todo:
-# - gtkdoc
-#
 Summary:	Flash animations redering library
 Summary(pl.UTF-8):	Biblioteka renderująca animacje flash
 Name:		swfdec
@@ -13,13 +9,17 @@ Source0:	http://swfdec.freedesktop.org/download/swfdec/0.4/%{name}-%{version}.ta
 # Source0-md5:	851b8891299b68f84dc731441188b261
 Patch0:		%{name}-libs.patch
 URL:		http://swfdec.freedesktop.org/wiki/
+BuildRequires:	alsa-lib-devel >= 1.0
 BuildRequires:	autoconf >= 2.58
 BuildRequires:	automake >= 1.6
-BuildRequires:	cairo-devel >= 0.4.0
-BuildRequires:	gtk+2-devel >= 1:2.1.2
+BuildRequires:	cairo-devel >= 1.2.0
+BuildRequires:	ffmpeg-devel
+BuildRequires:	gtk+2-devel >= 2:2.8.0
+BuildRequires:	gtk-doc >= 1.6
 BuildRequires:	libmad-devel >= 0.14.2b
 BuildRequires:	liboil-devel >= 0.3.9
 BuildRequires:	libtool
+BuildRequires:	pango-devel >= 1:1.10.0
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.357
 BuildRequires:	zlib-devel >= 1.1.4
@@ -37,15 +37,29 @@ Biblioteka libswfdec przeznaczona jest do odtwarzania animacji flash.
 Obecnie potrafi wyświetlić większość animacji Flash 3 i część Flash 4.
 Interaktywność nie jest jeszcze obsługiwana.
 
+%package apidocs
+Summary:	swfdec API documetation
+Summary(pl.UTF-8):	Dokumentacja API swfdec
+Group:		Documentation
+Requires:	gtk-doc-common
+
+%description apidocs
+swfdec API documetation.
+
+%description apidocs -l pl.UTF-8
+Dokumentacja API swfdec.
+
 %package devel
 Summary:	Header file required to build programs using swfdec library
 Summary(pl.UTF-8):	Pliki nagłówkowe wymagane przez programy używające swfdec
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	cairo-devel >= 1.2.0
-Requires:	glib2-devel >= 1:2.12.0
+Requires:	ffmpeg-devel
+Requires:	glib2-devel >= 1:2.8.0
 Requires:	libmad-devel >= 0.14.2b
 Requires:	liboil-devel >= 0.3.9
+Requires:	pango-devel >= 1:1.10.0
 Obsoletes:	libswfdec0-devel
 
 %description devel
@@ -78,7 +92,8 @@ Statyczna biblioteka swfdec.
 %{__autoconf}
 %{__automake}
 
-%configure
+%configure \
+	--with-html-dir=%{_gtkdocdir}
 
 %{__make}
 
@@ -98,6 +113,10 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README
 %attr(755,root,root) %{_libdir}/libswfdec-*.so.*.*
+
+%files apidocs
+%defattr(644,root,root,755)
+%{_gtkdocdir}/swfdec
 
 %files devel
 %defattr(644,root,root,755)
