@@ -1,26 +1,20 @@
 Summary:	Flash animations redering library
 Summary(pl.UTF-8):	Biblioteka renderująca animacje flash
 Name:		swfdec
-Version:	0.4.2
+Version:	0.4.3
 Release:	0.1
 License:	GPL
 Group:		Libraries
 Source0:	http://swfdec.freedesktop.org/download/swfdec/0.4/%{name}-%{version}.tar.gz
-# Source0-md5:	851b8891299b68f84dc731441188b261
-Patch0:		%{name}-libs.patch
+# Source0-md5:	7a857dcc9228ac590327b04a90db2e64
 URL:		http://swfdec.freedesktop.org/wiki/
 BuildRequires:	alsa-lib-devel >= 1.0
-BuildRequires:	autoconf >= 2.58
-BuildRequires:	automake >= 1.6
 BuildRequires:	cairo-devel >= 1.2.0
 BuildRequires:	ffmpeg-devel
 BuildRequires:	gtk+2-devel >= 2:2.8.0
 BuildRequires:	gtk-doc >= 1.6
 BuildRequires:	libmad-devel >= 0.14.2b
 BuildRequires:	liboil-devel >= 0.3.9
-BuildRequires:	libtool
-BuildRequires:	pango-devel >= 1:1.10.0
-BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.357
 BuildRequires:	zlib-devel >= 1.1.4
 Obsoletes:	gimp-plugin-swfdec
@@ -83,14 +77,8 @@ Statyczna biblioteka swfdec.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
-%{__libtoolize}
-%{__aclocal} -I m4
-%{__autoheader}
-%{__autoconf}
-%{__automake}
 
 %configure \
 	--with-html-dir=%{_gtkdocdir}
