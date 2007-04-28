@@ -1,20 +1,29 @@
+#
+# Conditional build:
+%bcond_without	apidocs		# disables gtk-doc
+#
 Summary:	Flash animations redering library
 Summary(pl.UTF-8):	Biblioteka renderująca animacje flash
 Name:		swfdec
-Version:	0.4.3
+Version:	0.4.4
 Release:	1
 License:	GPL
 Group:		Libraries
 Source0:	http://swfdec.freedesktop.org/download/swfdec/0.4/%{name}-%{version}.tar.gz
-# Source0-md5:	7a857dcc9228ac590327b04a90db2e64
+# Source0-md5:	7f69ae821c6002a857d99656758e8c0b
 URL:		http://swfdec.freedesktop.org/wiki/
+BuildRequires:	autoconf >= 2.58
+BuildRequires:	automake >= 1:1.6
 BuildRequires:	alsa-lib-devel >= 1.0
 BuildRequires:	cairo-devel >= 1.2.0
 BuildRequires:	ffmpeg-devel
 BuildRequires:	gtk+2-devel >= 2:2.8.0
-BuildRequires:	gtk-doc >= 1.6
+%{?with_apidocs:BuildRequires:	gtk-doc >= 1.6}
+BuildRequires:	gnome-vfs2-devel >= 2.14.0
+BuildRequires:	gstreamer-devel >= 0.10.11
 BuildRequires:	libmad-devel >= 0.14.2b
 BuildRequires:	liboil-devel >= 0.3.9
+BuildRequires:	libtool
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.357
 BuildRequires:	zlib-devel >= 1.1.4
@@ -51,10 +60,9 @@ Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	cairo-devel >= 1.2.0
 Requires:	ffmpeg-devel
-Requires:	glib2-devel >= 1:2.8.0
+Requires:	gtk+2-devel >= 2:2.8.0
 Requires:	libmad-devel >= 0.14.2b
 Requires:	liboil-devel >= 0.3.9
-Requires:	pango-devel >= 1:1.10.0
 Obsoletes:	libswfdec0-devel
 
 %description devel
@@ -80,10 +88,19 @@ Statyczna biblioteka swfdec.
 %setup -q
 
 %build
-
+%{__libtoolize}
+%{__aclocal} -I m4
+%{__autoconf}
+%{__autoheader}
+%{__automake}
 %configure \
+	--enable-ffmpeg \
+	--enable-gnome-vfs \
+	--enable-gstreamer \
+	--%{?with_apidocs:en}%{?!with_apidocs:dis}able-gtk-doc \
+	--enable-gtk \
+	--enable-mad \
 	--with-html-dir=%{_gtkdocdir}
-
 %{__make}
 
 %install
@@ -91,6 +108,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+%{?!with_apidocs:rm -rf $RPM_BUILD_ROOT%{_gtkdocdir}}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -103,9 +122,11 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS ChangeLog NEWS README
 %attr(755,root,root) %{_libdir}/libswfdec-*.so.*.*
 
+%if %{with apidocs}
 %files apidocs
 %defattr(644,root,root,755)
 %{_gtkdocdir}/swfdec
+%endif
 
 %files devel
 %defattr(644,root,root,755)
