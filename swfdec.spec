@@ -1,6 +1,7 @@
 #
 # Conditional build:
-%bcond_without	apidocs		# disables gtk-doc
+%bcond_without	apidocs		# disable gtk-doc
+%bcond_without	gnomevfs	# without gnome-vfs support
 #
 Summary:	Flash animations redering library
 Summary(pl.UTF-8):	Biblioteka renderująca animacje flash
@@ -19,7 +20,7 @@ BuildRequires:	cairo-devel >= 1.2.0
 BuildRequires:	ffmpeg-devel
 BuildRequires:	gtk+2-devel >= 2:2.8.0
 %{?with_apidocs:BuildRequires:	gtk-doc >= 1.6}
-BuildRequires:	gnome-vfs2-devel >= 2.14.0
+%{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.14.0}
 BuildRequires:	gstreamer-devel >= 0.10.11
 BuildRequires:	libmad-devel >= 0.14.2b
 BuildRequires:	liboil-devel >= 0.3.9
@@ -41,28 +42,18 @@ Biblioteka libswfdec przeznaczona jest do odtwarzania animacji flash.
 Obecnie potrafi wyświetlić większość animacji Flash 3 i część Flash 4.
 Interaktywność nie jest jeszcze obsługiwana.
 
-%package apidocs
-Summary:	swfdec API documetation
-Summary(pl.UTF-8):	Dokumentacja API swfdec
-Group:		Documentation
-Requires:	gtk-doc-common
-
-%description apidocs
-swfdec API documetation.
-
-%description apidocs -l pl.UTF-8
-Dokumentacja API swfdec.
-
 %package devel
 Summary:	Header file required to build programs using swfdec library
 Summary(pl.UTF-8):	Pliki nagłówkowe wymagane przez programy używające swfdec
-Group:		X11/Development/Libraries
+Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	cairo-devel >= 1.2.0
 Requires:	ffmpeg-devel
-Requires:	gtk+2-devel >= 2:2.8.0
+Requires:	glib2-devel >= 1:2.8.0
+Requires:	gstreamer-devel >= 0.10.11
 Requires:	libmad-devel >= 0.14.2b
 Requires:	liboil-devel >= 0.3.9
+Requires:	pango-devel >= 1:1.10.0
 Obsoletes:	libswfdec0-devel
 
 %description devel
@@ -75,7 +66,7 @@ biblioteki swfdec.
 %package static
 Summary:	Static swfdec library
 Summary(pl.UTF-8):	Statyczna biblioteka swfdec
-Group:		X11/Development/Libraries
+Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
@@ -83,6 +74,58 @@ Static swfdec library.
 
 %description static -l pl.UTF-8
 Statyczna biblioteka swfdec.
+
+%package gtk
+Summary:	swfdec-gtk library
+Summary(pl.UTF-8):	Biblioteka swfdec-gtk
+Group:		X11/Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description gtk
+swfdec-gtk library.
+
+%description gtk -l pl.UTF-8
+Biblioteka swfdec-gtk.
+
+%package gtk-devel
+Summary:	Header files for swfdec-gtk library
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki swfdec-gtk
+Group:		X11/Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
+Requires:	%{name}-gtk = %{version}-%{release}
+Requires:	alsa-lib-devel >= 1.0
+%{?with_gnomevfs:Requires:	gnome-vfs2-devel >= 2.14.0}
+Requires:	gtk+2-devel >= 2:2.8.0
+
+%description gtk-devel
+Header files for swfdec-gtk library.
+
+%description gtk-devel -l pl.UTF-8
+Pliki nagłówkowe biblioteki swfdec-gtk.
+
+%package gtk-static
+Summary:	Static swfdec-gtk library
+Summary(pl.UTF-8):	Statyczna biblioteka swfdec-gtk
+Group:		X11/Development/Libraries
+Requires:	%{name}-gtk-devel = %{version}-%{release}
+
+%description gtk-static
+Static swfdec-gtk library.
+
+%description gtk-static -l pl.UTF-8
+Statyczna biblioteka swfdec-gtk.
+
+%package apidocs
+Summary:	swfdec API documetation
+Summary(pl.UTF-8):	Dokumentacja API swfdec
+Group:		Documentation
+Requires:	gtk-doc-common
+
+%description apidocs
+swfdec API documetation.
+
+%description apidocs -l pl.UTF-8
+Dokumentacja API swfdec.
 
 %prep
 %setup -q
@@ -94,8 +137,8 @@ Statyczna biblioteka swfdec.
 %{__autoheader}
 %{__automake}
 %configure \
+	%{!?with_gnomevfs:--disable-gnome-vfs} \
 	--enable-ffmpeg \
-	--enable-gnome-vfs \
 	--enable-gstreamer \
 	--%{?with_apidocs:en}%{?!with_apidocs:dis}able-gtk-doc \
 	--enable-gtk \
@@ -109,7 +152,7 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-%{?!with_apidocs:rm -rf $RPM_BUILD_ROOT%{_gtkdocdir}}
+%{!?with_apidocs:rm -rf $RPM_BUILD_ROOT%{_gtkdocdir}}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -117,24 +160,43 @@ rm -rf $RPM_BUILD_ROOT
 %post	-p /sbin/ldconfig
 %postun	-p /sbin/ldconfig
 
+%post	gtk -p /sbin/ldconfig
+%postun	gtk -p /sbin/ldconfig
+
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README
-%attr(755,root,root) %{_libdir}/libswfdec-*.so.*.*
+%attr(755,root,root) %{_libdir}/libswfdec-0.4.so.*.*
+
+%files devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libswfdec-0.4.so
+%{_libdir}/libswfdec-0.4.la
+%dir %{_includedir}/swfdec-0.4
+%{_includedir}/swfdec-0.4/libswfdec
+%{_pkgconfigdir}/swfdec-0.4.pc
+
+%files static
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libswfdec-0.4.a
+
+%files gtk
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.4.so.*.*
+
+%files gtk-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.4.so
+%{_libdir}/libswfdec-gtk-0.4.la
+%{_includedir}/swfdec-0.4/libswfdec-gtk
+%{_pkgconfigdir}/swfdec-gtk-0.4.pc
+
+%files gtk-static
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.4.a
 
 %if %{with apidocs}
 %files apidocs
 %defattr(644,root,root,755)
 %{_gtkdocdir}/swfdec
 %endif
-
-%files devel
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-*.so
-%{_libdir}/libswfdec-*.la
-%{_includedir}/swfdec-*
-%{_pkgconfigdir}/swfdec-*.pc
-
-%files static
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-*.a
