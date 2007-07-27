@@ -6,12 +6,12 @@
 Summary:	Flash animations redering library
 Summary(pl.UTF-8):	Biblioteka renderująca animacje flash
 Name:		swfdec
-Version:	0.4.5
+Version:	0.5.0
 Release:	1
 License:	GPL
 Group:		Libraries
-Source0:	http://swfdec.freedesktop.org/download/swfdec/0.4/%{name}-%{version}.tar.gz
-# Source0-md5:	13830b93346ff5d15b2de6a5c55bf54a
+Source0:	http://swfdec.freedesktop.org/download/swfdec/0.5/%{name}-%{version}.tar.gz
+# Source0-md5:	53c9dd7f87ec9a73277ceb4d7c033a3c
 URL:		http://swfdec.freedesktop.org/wiki/
 BuildRequires:	autoconf >= 2.58
 BuildRequires:	automake >= 1:1.6
@@ -166,34 +166,34 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README
-%attr(755,root,root) %{_libdir}/libswfdec-0.4.so.*.*
+%attr(755,root,root) %{_libdir}/libswfdec-0.5.so.*.*
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-0.4.so
-%{_libdir}/libswfdec-0.4.la
-%dir %{_includedir}/swfdec-0.4
-%{_includedir}/swfdec-0.4/libswfdec
-%{_pkgconfigdir}/swfdec-0.4.pc
+%attr(755,root,root) %{_libdir}/libswfdec-0.5.so
+%{_libdir}/libswfdec-0.5.la
+%dir %{_includedir}/swfdec-0.5
+%{_includedir}/swfdec-0.5/libswfdec
+%{_pkgconfigdir}/swfdec-0.5.pc
 
 %files static
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-0.4.a
+%attr(755,root,root) %{_libdir}/libswfdec-0.5.a
 
 %files gtk
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.4.so.*.*
+%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.5.so.*.*
 
 %files gtk-devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.4.so
-%{_libdir}/libswfdec-gtk-0.4.la
-%{_includedir}/swfdec-0.4/libswfdec-gtk
-%{_pkgconfigdir}/swfdec-gtk-0.4.pc
+%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.5.so
+%{_libdir}/libswfdec-gtk-0.5.la
+%{_includedir}/swfdec-0.5/libswfdec-gtk
+%{_pkgconfigdir}/swfdec-gtk-0.5.pc
 
 %files gtk-static
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.4.a
+%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.5.a
 
 %if %{with apidocs}
 %files apidocs
