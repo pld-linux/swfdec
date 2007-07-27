@@ -13,6 +13,7 @@ Group:		Libraries
 Source0:	http://swfdec.freedesktop.org/download/swfdec/0.5/%{name}-%{version}.tar.gz
 # Source0-md5:	53c9dd7f87ec9a73277ceb4d7c033a3c
 URL:		http://swfdec.freedesktop.org/wiki/
+BuildRequires:	a52dec-libs-devel
 BuildRequires:	autoconf >= 2.58
 BuildRequires:	automake >= 1:1.6
 BuildRequires:	alsa-lib-devel >= 1.0
