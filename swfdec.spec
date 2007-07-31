@@ -2,18 +2,21 @@
 # Conditional build:
 %bcond_without	apidocs		# disable gtk-doc
 %bcond_without	gnomevfs	# without gnome-vfs support
+%bcond_without	gnome		# disable gnomevfs
 #
+%if %{without gnome}
+%undefine	with_gnomevfs
+%endif
 Summary:	Flash animations redering library
 Summary(pl.UTF-8):	Biblioteka renderująca animacje flash
 Name:		swfdec
 Version:	0.5.0
 Release:	1
-License:	GPL
+License:	LGPL v2.1+
 Group:		Libraries
 Source0:	http://swfdec.freedesktop.org/download/swfdec/0.5/%{name}-%{version}.tar.gz
 # Source0-md5:	53c9dd7f87ec9a73277ceb4d7c033a3c
 URL:		http://swfdec.freedesktop.org/wiki/
-BuildRequires:	a52dec-libs-devel
 BuildRequires:	autoconf >= 2.58
 BuildRequires:	automake >= 1:1.6
 BuildRequires:	alsa-lib-devel >= 1.0
@@ -25,7 +28,6 @@ BuildRequires:	gtk+2-devel >= 2:2.8.0
 BuildRequires:	gstreamer-devel >= 0.10.11
 BuildRequires:	libmad-devel >= 0.14.2b
 BuildRequires:	liboil-devel >= 0.3.9
-BuildRequires:	libselinux-devel
 BuildRequires:	libtool
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.357
