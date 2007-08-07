@@ -29,7 +29,7 @@ BuildRequires:	gstreamer-devel >= 0.10.11
 BuildRequires:	libmad-devel >= 0.14.2b
 BuildRequires:	liboil-devel >= 0.3.9
 BuildRequires:	libtool
-BuildRequires:	libsoup >= 2.2.100
+BuildRequires:	libsoup-devel >= 2.2.100
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.357
 BuildRequires:	zlib-devel >= 1.1.4
