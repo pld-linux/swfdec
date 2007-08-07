@@ -101,6 +101,7 @@ Requires:	%{name}-gtk = %{version}-%{release}
 Requires:	alsa-lib-devel >= 1.0
 %{?with_gnomevfs:Requires:	gnome-vfs2-devel >= 2.14.0}
 Requires:	gtk+2-devel >= 2:2.8.0
+Requires:	libsoup-devel >= 2.2.100
 
 %description gtk-devel
 Header files for swfdec-gtk library.
