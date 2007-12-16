@@ -1,35 +1,34 @@
 #
 # Conditional build:
 %bcond_without	apidocs		# disable gtk-doc
-%bcond_without	gnomevfs	# without gnome-vfs support
-%bcond_without	gnome		# disable gnomevfs
+%bcond_with	vivified	# build (internal) Vivified Flash Debugger
 #
-%if %{without gnome}
-%undefine	with_gnomevfs
-%endif
 Summary:	Flash animations redering library
 Summary(pl.UTF-8):	Biblioteka renderująca animacje flash
 Name:		swfdec
-Version:	0.5.3
+Version:	0.5.4
 Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
 Source0:	http://swfdec.freedesktop.org/download/swfdec/0.5/%{name}-%{version}.tar.gz
-# Source0-md5:	bbabc83acad340479bae5dd125c40fc7
+# Source0-md5:	506b032204b71ffac7d0424eaf9608c4
 URL:		http://swfdec.freedesktop.org/wiki/
 BuildRequires:	autoconf >= 2.58
 BuildRequires:	automake >= 1:1.6
 BuildRequires:	alsa-lib-devel >= 1.0
 BuildRequires:	cairo-devel >= 1.2.0
 BuildRequires:	ffmpeg-devel
+BuildRequires:	glib2-devel >= 1:2.10.0
 BuildRequires:	gtk+2-devel >= 2:2.8.0
+%{?with_vivified:BuildRequires:	gtk+2-devel >= 2:2.11.6}
 %{?with_apidocs:BuildRequires:	gtk-doc >= 1.6}
-%{?with_gnomevfs:BuildRequires:	gnome-vfs2-devel >= 2.14.0}
 BuildRequires:	gstreamer-devel >= 0.10.11
 BuildRequires:	libmad-devel >= 0.14.2b
 BuildRequires:	liboil-devel >= 0.3.9
 BuildRequires:	libtool
 BuildRequires:	libsoup-devel >= 2.2.100
+%{?with_vivified:BuildRequires:	ming-devel >= 0.4.0-0.beta5}
+BuildRequires:	pango-devel >= 1:1.10.0
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.357
 BuildRequires:	zlib-devel >= 1.1.4
@@ -54,7 +53,7 @@ Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	cairo-devel >= 1.2.0
 Requires:	ffmpeg-devel
-Requires:	glib2-devel >= 1:2.8.0
+Requires:	glib2-devel >= 1:2.10.0
 Requires:	gstreamer-devel >= 0.10.11
 Requires:	libmad-devel >= 0.14.2b
 Requires:	liboil-devel >= 0.3.9
@@ -99,7 +98,6 @@ Group:		X11/Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 Requires:	%{name}-gtk = %{version}-%{release}
 Requires:	alsa-lib-devel >= 1.0
-%{?with_gnomevfs:Requires:	gnome-vfs2-devel >= 2.14.0}
 Requires:	gtk+2-devel >= 2:2.8.0
 Requires:	libsoup-devel >= 2.2.100
 
@@ -143,12 +141,12 @@ Dokumentacja API swfdec.
 %{__autoheader}
 %{__automake}
 %configure \
-	%{!?with_gnomevfs:--disable-gnome-vfs} \
 	--enable-ffmpeg \
 	--enable-gstreamer \
-	--%{?with_apidocs:en}%{?!with_apidocs:dis}able-gtk-doc \
+	--%{?with_apidocs:en}%{!?with_apidocs:dis}able-gtk-doc \
 	--enable-gtk \
 	--enable-mad \
+	%{?with_vivified:--enable-vivified} \
 	--with-html-dir=%{_gtkdocdir}
 %{__make} -j1
 
@@ -172,7 +170,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README
-%attr(755,root,root) %{_libdir}/libswfdec-0.5.so.*.*
+%attr(755,root,root) %{_libdir}/libswfdec-0.5.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libswfdec-0.5.so.4
 
 %files devel
 %defattr(644,root,root,755)
@@ -188,7 +187,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files gtk
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.5.so.*.*
+%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.5.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libswfdec-gtk-0.5.so.4
 
 %files gtk-devel
 %defattr(644,root,root,755)
@@ -200,6 +200,9 @@ rm -rf $RPM_BUILD_ROOT
 %files gtk-static
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libswfdec-gtk-0.5.a
+
+# swfplay - binary is noinst, icons are installed
+#%{_iconsdir}/hicolor/*/apps/swfdec.*
 
 %if %{with apidocs}
 %files apidocs
