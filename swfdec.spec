@@ -6,12 +6,12 @@
 Summary:	Flash animations redering library
 Summary(pl.UTF-8):	Biblioteka renderująca animacje flash
 Name:		swfdec
-Version:	0.5.5
+Version:	0.5.90
 Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
 Source0:	http://swfdec.freedesktop.org/download/swfdec/0.5/%{name}-%{version}.tar.gz
-# Source0-md5:	b988b014e210cee205aeccaca4d6a9a7
+# Source0-md5:	c37ec400072916b6d8dc9384d56343e6
 URL:		http://swfdec.freedesktop.org/wiki/
 BuildRequires:	autoconf >= 2.58
 BuildRequires:	automake >= 1:1.6
@@ -190,14 +190,14 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README
 %attr(755,root,root) %{_libdir}/libswfdec-0.5.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libswfdec-0.5.so.5
+%attr(755,root,root) %ghost %{_libdir}/libswfdec-0.5.so.90
 
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libswfdec-0.5.so
 %{_libdir}/libswfdec-0.5.la
 %dir %{_includedir}/swfdec-0.5
-%{_includedir}/swfdec-0.5/libswfdec
+%{_includedir}/swfdec-0.5/swfdec
 %{_pkgconfigdir}/swfdec-0.5.pc
 
 %files static
@@ -207,13 +207,13 @@ rm -rf $RPM_BUILD_ROOT
 %files gtk
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libswfdec-gtk-0.5.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libswfdec-gtk-0.5.so.5
+%attr(755,root,root) %ghost %{_libdir}/libswfdec-gtk-0.5.so.90
 
 %files gtk-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libswfdec-gtk-0.5.so
 %{_libdir}/libswfdec-gtk-0.5.la
-%{_includedir}/swfdec-0.5/libswfdec-gtk
+%{_includedir}/swfdec-0.5/swfdec-gtk
 %{_pkgconfigdir}/swfdec-gtk-0.5.pc
 
 %files gtk-static
