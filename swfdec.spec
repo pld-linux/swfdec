@@ -7,26 +7,26 @@ Summary:	Flash animations redering library
 Summary(pl.UTF-8):	Biblioteka renderująca animacje flash
 Name:		swfdec
 Version:	0.5.5
-Release:	1
+Release:	2
 License:	LGPL v2.1+
 Group:		Libraries
 Source0:	http://swfdec.freedesktop.org/download/swfdec/0.5/%{name}-%{version}.tar.gz
 # Source0-md5:	b988b014e210cee205aeccaca4d6a9a7
 URL:		http://swfdec.freedesktop.org/wiki/
+BuildRequires:	alsa-lib-devel >= 1.0
 BuildRequires:	autoconf >= 2.58
 BuildRequires:	automake >= 1:1.6
-BuildRequires:	alsa-lib-devel >= 1.0
 BuildRequires:	cairo-devel >= 1.2.0
 BuildRequires:	ffmpeg-devel
 BuildRequires:	glib2-devel >= 1:2.10.0
-BuildRequires:	gtk+2-devel >= 2:2.8.0
-%{?with_vivified:BuildRequires:	gtk+2-devel >= 2:2.11.6}
-%{?with_apidocs:BuildRequires:	gtk-doc >= 1.6}
 BuildRequires:	gstreamer-devel >= 0.10.11
+%{?with_vivified:BuildRequires:	gtk+2-devel >= 2:2.11.6}
+BuildRequires:	gtk+2-devel >= 2:2.8.0
+%{?with_apidocs:BuildRequires:	gtk-doc >= 1.6}
 BuildRequires:	libmad-devel >= 0.14.2b
 BuildRequires:	liboil-devel >= 0.3.9
-BuildRequires:	libtool
 BuildRequires:	libsoup-devel >= 2.2.100
+BuildRequires:	libtool
 %{?with_vivified:BuildRequires:	ming-devel >= 0.4.0-0.beta5}
 BuildRequires:	pango-devel >= 1:1.10.0
 BuildRequires:	pkgconfig
