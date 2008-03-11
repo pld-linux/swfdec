@@ -7,7 +7,7 @@ Summary:	Flash animations redering library
 Summary(pl.UTF-8):	Biblioteka renderująca animacje flash
 Name:		swfdec
 Version:	0.6.0
-Release:	2
+Release:	3
 License:	LGPL v2.1+
 Group:		Libraries
 Source0:	http://swfdec.freedesktop.org/download/swfdec/0.6/%{name}-%{version}.tar.gz
@@ -190,7 +190,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README
 %attr(755,root,root) %{_libdir}/libswfdec-0.6.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libswfdec-0.6.so.0
+%attr(755,root,root) %ghost %{_libdir}/libswfdec-0.6.so.90
 
 %files devel
 %defattr(644,root,root,755)
@@ -207,7 +207,7 @@ rm -rf $RPM_BUILD_ROOT
 %files gtk
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libswfdec-gtk-0.6.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libswfdec-gtk-0.6.so.0
+%attr(755,root,root) %ghost %{_libdir}/libswfdec-gtk-0.6.so.90
 
 %files gtk-devel
 %defattr(644,root,root,755)
