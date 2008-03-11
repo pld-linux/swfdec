@@ -189,36 +189,36 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README
-%attr(755,root,root) %{_libdir}/libswfdec-0.5.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libswfdec-0.5.so.90
+%attr(755,root,root) %{_libdir}/libswfdec-0.6.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libswfdec-0.6.so.0
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-0.5.so
-%{_libdir}/libswfdec-0.5.la
-%dir %{_includedir}/swfdec-0.5
-%{_includedir}/swfdec-0.5/swfdec
-%{_pkgconfigdir}/swfdec-0.5.pc
+%attr(755,root,root) %{_libdir}/libswfdec-0.6.so
+%{_libdir}/libswfdec-0.6.la
+%dir %{_includedir}/swfdec-0.6
+%{_includedir}/swfdec-0.6/swfdec
+%{_pkgconfigdir}/swfdec-0.6.pc
 
 %files static
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-0.5.a
+%attr(755,root,root) %{_libdir}/libswfdec-0.6.a
 
 %files gtk
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.5.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libswfdec-gtk-0.5.so.90
+%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.6.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libswfdec-gtk-0.6.so.0
 
 %files gtk-devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.5.so
-%{_libdir}/libswfdec-gtk-0.5.la
-%{_includedir}/swfdec-0.5/swfdec-gtk
-%{_pkgconfigdir}/swfdec-gtk-0.5.pc
+%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.6.so
+%{_libdir}/libswfdec-gtk-0.6.la
+%{_includedir}/swfdec-0.6/swfdec-gtk
+%{_pkgconfigdir}/swfdec-gtk-0.6.pc
 
 %files gtk-static
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.5.a
+%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.6.a
 
 %files icons
 %defattr(644,root,root,755)
