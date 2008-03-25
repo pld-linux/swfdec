@@ -20,6 +20,7 @@ BuildRequires:	cairo-devel >= 1.2.0
 BuildRequires:	ffmpeg-devel
 BuildRequires:	glib2-devel >= 1:2.10.0
 BuildRequires:	gstreamer-devel >= 0.10.11
+BuildRequires:	gstreamer-plugins-base-devel >= 0.10.17
 %{?with_vivified:BuildRequires:	gtk+2-devel >= 2:2.11.6}
 BuildRequires:	gtk+2-devel >= 2:2.8.0
 %{?with_apidocs:BuildRequires:	gtk-doc >= 1.6}
