@@ -6,12 +6,12 @@
 Summary:	Flash animations redering library
 Summary(pl.UTF-8):	Biblioteka renderująca animacje flash
 Name:		swfdec
-Version:	0.6.6
+Version:	0.7.2
 Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
-Source0:	http://swfdec.freedesktop.org/download/swfdec/0.6/%{name}-%{version}.tar.gz
-# Source0-md5:	3e91d48e0b8b839e12ff8f9ced4b5040
+Source0:	http://swfdec.freedesktop.org/download/swfdec/0.7/%{name}-%{version}.tar.gz
+# Source0-md5:	7624b5642c947fb054273f091a1d970c
 URL:		http://swfdec.freedesktop.org/wiki/
 BuildRequires:	alsa-lib-devel >= 1.0
 BuildRequires:	autoconf >= 2.58
@@ -190,36 +190,36 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README
-%attr(755,root,root) %{_libdir}/libswfdec-0.6.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libswfdec-0.6.so.90
+%attr(755,root,root) %{_libdir}/libswfdec-0.7.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libswfdec-0.7.so.0
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-0.6.so
-%{_libdir}/libswfdec-0.6.la
-%dir %{_includedir}/swfdec-0.6
-%{_includedir}/swfdec-0.6/swfdec
-%{_pkgconfigdir}/swfdec-0.6.pc
+%attr(755,root,root) %{_libdir}/libswfdec-0.7.so
+%{_libdir}/libswfdec-0.7.la
+%dir %{_includedir}/swfdec-0.7
+%{_includedir}/swfdec-0.7/swfdec
+%{_pkgconfigdir}/swfdec-0.7.pc
 
 %files static
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-0.6.a
+%attr(755,root,root) %{_libdir}/libswfdec-0.7.a
 
 %files gtk
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.6.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libswfdec-gtk-0.6.so.90
+%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.7.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libswfdec-gtk-0.7.so.0
 
 %files gtk-devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.6.so
-%{_libdir}/libswfdec-gtk-0.6.la
-%{_includedir}/swfdec-0.6/swfdec-gtk
-%{_pkgconfigdir}/swfdec-gtk-0.6.pc
+%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.7.so
+%{_libdir}/libswfdec-gtk-0.7.la
+%{_includedir}/swfdec-0.7/swfdec-gtk
+%{_pkgconfigdir}/swfdec-gtk-0.7.pc
 
 %files gtk-static
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.6.a
+%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.7.a
 
 %files icons
 %defattr(644,root,root,755)
