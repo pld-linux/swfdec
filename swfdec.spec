@@ -1,45 +1,41 @@
-# TODO
-# - use xulrunnerl
 #
 # Conditional build:
-%bcond_without	gstreamer	# build without swfdec-mozilla-player
-%bcond_without	gimp		# don't build gimp plugin
-%bcond_with	libart		# use libarg_lgpl instead of cairo
+%bcond_without	apidocs		# disable gtk-doc
+%bcond_with	vivified	# build (internal) Vivified Flash Debugger
 #
 Summary:	Flash animations redering library
 Summary(pl.UTF-8):	Biblioteka renderująca animacje flash
 Name:		swfdec
-Version:	0.3.6
-Release:	6
-License:	GPL
+Version:	0.6.6
+Release:	2
+License:	LGPL v2.1+
 Group:		Libraries
-Source0:	http://www.schleef.org/swfdec/download/%{name}-%{version}.tar.gz
-# Source0-md5:	bcfca3a8ce1d524ebf4d11fd511dedb8
-Patch0:		%{name}-as_needed.patch
-URL:		http://www.schleef.org/swfdec/
+Source0:	http://swfdec.freedesktop.org/download/swfdec/0.6/%{name}-%{version}.tar.gz
+# Source0-md5:	3e91d48e0b8b839e12ff8f9ced4b5040
+URL:		http://swfdec.freedesktop.org/wiki/
+BuildRequires:	alsa-lib-devel >= 1.0
 BuildRequires:	autoconf >= 2.58
-BuildRequires:	automake >= 1.6
-%{!?with_libart:BuildRequires:	cairo-devel >= 0.4.0}
-%{?with_gimp:BuildRequires:	gimp-devel >= 1:2.0.0}
-%if %{with gstreamer}
-BuildRequires:	gstreamer-devel >= 0.10.0
-BuildRequires:	gstreamer-plugins-base-devel >= 0.10.0
-%endif
-BuildRequires:	gtk+2-devel >= 1:2.1.2
-%{?with_libart:BuildRequires:	libart_lgpl-devel >= 2.0}
+BuildRequires:	automake >= 1:1.6
+BuildRequires:	cairo-devel >= 1.2.0
+BuildRequires:	ffmpeg-devel
+BuildRequires:	glib2-devel >= 1:2.10.0
+BuildRequires:	gstreamer-devel >= 0.10.11
+BuildRequires:	gstreamer-plugins-base-devel >= 0.10.17
+%{?with_vivified:BuildRequires:	gtk+2-devel >= 2:2.11.6}
+BuildRequires:	gtk+2-devel >= 2:2.8.0
+%{?with_apidocs:BuildRequires:	gtk-doc >= 1.6}
 BuildRequires:	libmad-devel >= 0.14.2b
 BuildRequires:	liboil-devel >= 0.3.9
+BuildRequires:	libsoup-devel >= 2.2.100
 BuildRequires:	libtool
+%{?with_vivified:BuildRequires:	ming-devel >= 0.4.0-0.beta5}
+BuildRequires:	pango-devel >= 1:1.10.0
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.357
-BuildRequires:	xulrunner-devel
 BuildRequires:	zlib-devel >= 1.1.4
+Obsoletes:	gimp-plugin-swfdec
 Obsoletes:	libswfdec0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%if %{with gimp}
-%define		gimpplugindir	%(gimptool --gimpplugindir 2>/dev/null)/plug-ins
-%endif
 
 %description
 Libswfdec is a library for rendering Flash animations. Currently it
@@ -54,13 +50,15 @@ Interaktywność nie jest jeszcze obsługiwana.
 %package devel
 Summary:	Header file required to build programs using swfdec library
 Summary(pl.UTF-8):	Pliki nagłówkowe wymagane przez programy używające swfdec
-Group:		X11/Development/Libraries
+Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-%{!?with_libart:Requires:	cairo-devel >= 1.2.0}
-Requires:	glib2-devel >= 1:2.12.0
-%{?with_libart:Requires:	libart_lgpl-devel >= 2.0}
+Requires:	cairo-devel >= 1.2.0
+Requires:	ffmpeg-devel
+Requires:	glib2-devel >= 1:2.10.0
+Requires:	gstreamer-devel >= 0.10.11
 Requires:	libmad-devel >= 0.14.2b
 Requires:	liboil-devel >= 0.3.9
+Requires:	pango-devel >= 1:1.10.0
 Obsoletes:	libswfdec0-devel
 
 %description devel
@@ -73,7 +71,7 @@ biblioteki swfdec.
 %package static
 Summary:	Static swfdec library
 Summary(pl.UTF-8):	Statyczna biblioteka swfdec
-Group:		X11/Development/Libraries
+Group:		Development/Libraries
 Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
@@ -82,63 +80,97 @@ Static swfdec library.
 %description static -l pl.UTF-8
 Statyczna biblioteka swfdec.
 
-%package -n gimp-plugin-%{name}
-Summary:	SWF loading file filter for the GIMP
-Summary(pl.UTF-8):	Filtr wczytujący pliki SWF dla GIMP-a
+%package gtk
+Summary:	swfdec-gtk library
+Summary(pl.UTF-8):	Biblioteka swfdec-gtk
 Group:		X11/Libraries
 Requires:	%{name} = %{version}-%{release}
 
-%description -n gimp-plugin-%{name}
-SWF loading file filter for the GIMP.
+%description gtk
+swfdec-gtk library.
 
-%description -n gimp-plugin-%{name} -l pl.UTF-8
-Filtr wczytujący pliki SWF dla GIMP-a.
+%description gtk -l pl.UTF-8
+Biblioteka swfdec-gtk.
 
-%package -n browser-plugin-%{name}
-Summary:	Browser plugin for Flash rendering
-Summary(pl.UTF-8):	Wtyczka przeglądarki wyświetlająca animacje Flash
-Group:		X11/Libraries
-Requires:	%{name} = %{version}-%{release}
-Requires:	browser-plugins >= 2.0
-Requires:	browser-plugins(%{_target_base_arch})
-Obsoletes:	mozilla-plugin-swfdec
+%package gtk-devel
+Summary:	Header files for swfdec-gtk library
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki swfdec-gtk
+Group:		X11/Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
+Requires:	%{name}-gtk = %{version}-%{release}
+Requires:	alsa-lib-devel >= 1.0
+Requires:	gtk+2-devel >= 2:2.8.0
+Requires:	libsoup-devel >= 2.2.100
 
-%description -n browser-plugin-%{name}
-Browser plugin for rendering of Flash animations based on swfdec
-library.
+%description gtk-devel
+Header files for swfdec-gtk library.
 
-%description -n browser-plugin-%{name} -l pl.UTF-8
-Wtyczka przeglądarki wyświetlająca animacje Flash oparta na bibliotece
-swfdec.
+%description gtk-devel -l pl.UTF-8
+Pliki nagłówkowe biblioteki swfdec-gtk.
+
+%package gtk-static
+Summary:	Static swfdec-gtk library
+Summary(pl.UTF-8):	Statyczna biblioteka swfdec-gtk
+Group:		X11/Development/Libraries
+Requires:	%{name}-gtk-devel = %{version}-%{release}
+
+%description gtk-static
+Static swfdec-gtk library.
+
+%description gtk-static -l pl.UTF-8
+Statyczna biblioteka swfdec-gtk.
+
+%package icons
+Summary:	swfdec icons for GNOME integration
+Summary(pl.UTF-8):	Ikony swfdec do integracji z GNOME
+Group:		X11/Applications/Multimedia
+Requires(post,postun):	gtk+2
+Requires(post,postun):	hicolor-icon-theme
+
+%description icons
+swfdec icons for GNOME integration.
+
+%description icons -l pl.UTF-8
+Ikony swfdec do integracji z GNOME.
+
+%package apidocs
+Summary:	swfdec API documetation
+Summary(pl.UTF-8):	Dokumentacja API swfdec
+Group:		Documentation
+Requires:	gtk-doc-common
+
+%description apidocs
+swfdec API documetation.
+
+%description apidocs -l pl.UTF-8
+Dokumentacja API swfdec.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %{__libtoolize}
-%{__aclocal}
-%{__autoheader}
+%{__aclocal} -I m4
 %{__autoconf}
+%{__autoheader}
 %{__automake}
 %configure \
-	%{!?with_gstreamer:--disable-mozilla-plugin} \
-	%{?with_libart:--with-backend=libart}
-
-%{__make} \
-	gimpdir=%{gimpplugindir}
+	--enable-ffmpeg \
+	--enable-gstreamer \
+	--%{?with_apidocs:en}%{!?with_apidocs:dis}able-gtk-doc \
+	--enable-gtk \
+	--enable-mad \
+	%{?with_vivified:--enable-vivified} \
+	--with-html-dir=%{_gtkdocdir}
+%{__make} -j1
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT \
-	plugindir=%{_browserpluginsdir} \
-	gimpdir=%{gimpplugindir} \
-	pkgconfigdir=%{_pkgconfigdir}
+%{__make} -j1 install \
+	DESTDIR=$RPM_BUILD_ROOT
 
-rm -f $RPM_BUILD_ROOT%{_browserpluginsdir}/*.{a,la} \
-	$RPM_BUILD_ROOT%{_libdir}/gtk-*/*/loaders/*.{a,la}
+%{!?with_apidocs:rm -rf $RPM_BUILD_ROOT%{_gtkdocdir}}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -146,41 +178,55 @@ rm -rf $RPM_BUILD_ROOT
 %post	-p /sbin/ldconfig
 %postun	-p /sbin/ldconfig
 
-%post -n browser-plugin-%{name}
-%update_browser_plugins
+%post	gtk -p /sbin/ldconfig
+%postun	gtk -p /sbin/ldconfig
 
-%postun -n browser-plugin-%{name}
-if [ "$1" = 0 ]; then
-	%update_browser_plugins
-fi
+%post icons
+%update_icon_cache hicolor
+
+%postun icons
+%update_icon_cache hicolor
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog NEWS README TODO
-%if %{with gstreamer}
-# TODO: move to base browser plugin package
-%attr(755,root,root) %{_bindir}/swfdec-mozilla-player
-%endif
-%attr(755,root,root) %{_libdir}/libswfdec-*.so.*.*
-%attr(755,root,root) %{_libdir}/gtk-2.0/2.*/loaders/*.so
+%doc AUTHORS ChangeLog NEWS README
+%attr(755,root,root) %{_libdir}/libswfdec-0.6.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libswfdec-0.6.so.90
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-*.so
-%{_libdir}/libswfdec-*.la
-%{_includedir}/swfdec-*
-%{_pkgconfigdir}/swfdec-*.pc
+%attr(755,root,root) %{_libdir}/libswfdec-0.6.so
+%{_libdir}/libswfdec-0.6.la
+%dir %{_includedir}/swfdec-0.6
+%{_includedir}/swfdec-0.6/swfdec
+%{_pkgconfigdir}/swfdec-0.6.pc
 
 %files static
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-*.a
+%attr(755,root,root) %{_libdir}/libswfdec-0.6.a
 
-%if %{with gimp}
-%files -n gimp-plugin-%{name}
+%files gtk
 %defattr(644,root,root,755)
-%attr(755,root,root) %{gimpplugindir}/swf
+%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.6.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libswfdec-gtk-0.6.so.90
+
+%files gtk-devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.6.so
+%{_libdir}/libswfdec-gtk-0.6.la
+%{_includedir}/swfdec-0.6/swfdec-gtk
+%{_pkgconfigdir}/swfdec-gtk-0.6.pc
+
+%files gtk-static
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.6.a
+
+%files icons
+%defattr(644,root,root,755)
+%{_iconsdir}/hicolor/*/apps/swfdec.*
+
+%if %{with apidocs}
+%files apidocs
+%defattr(644,root,root,755)
+%{_gtkdocdir}/swfdec
 %endif
-
-%files -n browser-plugin-%{name}
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_browserpluginsdir}/libswfdecmozilla.so

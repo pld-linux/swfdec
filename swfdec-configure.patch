@@ -1,0 +1,22 @@
+--- swfdec-0.3.5/configure.ac.orig	2005-05-20 21:08:38.000000000 +0200
++++ swfdec-0.3.5/configure.ac	2005-05-22 12:27:32.203531984 +0200
+@@ -149,17 +149,9 @@
+ ### Check for Mozilla development headers
+ ###
+ MOZILLA_CFLAGS=
+-if test -z "$MOZILLA_CONFIG"; then
+-  AC_PATH_PROG(MOZILLA_CONFIG, mozilla-config, no)
+-fi
+-if test "x$MOZILLA_CONFIG" != "xno"; then
+-  _mozilla_include_dir=`$MOZILLA_CONFIG --cflags|sed 's/-I\(.*\) .*/\1/'`
+-  MOZILLA_CFLAGS="-I$_mozilla_include_dir/plugin -I$_mozilla_include_dir/java -I$_mozilla_include_dir/nspr"
++  _mozilla_include_dir="`$PKG_CONFIG --variable=includedir mozilla-gtkmozembed`"
++  MOZILLA_CFLAGS="-I$_mozilla_include_dir/plugin -I$_mozilla_include_dir/java -I`$PKG_CONFIG --variable=includedir mozilla-nspr`/nspr"
+   HAVE_MOZILLA=yes
+-else
+-  AC_MSG_WARN([mozilla-config not found. Mozilla/Netscape plugin will not be built])
+-  HAVE_MOZILLA=no
+-fi
+ AC_SUBST(MOZILLA_CFLAGS)
+ 
+ ###
