@@ -6,12 +6,12 @@
 Summary:	Flash animations redering library
 Summary(pl.UTF-8):	Biblioteka renderująca animacje flash
 Name:		swfdec
-Version:	0.7.2
+Version:	0.7.4
 Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
 Source0:	http://swfdec.freedesktop.org/download/swfdec/0.7/%{name}-%{version}.tar.gz
-# Source0-md5:	7624b5642c947fb054273f091a1d970c
+# Source0-md5:	08fcda4a46454bfc66b97fba2d385f8c
 URL:		http://swfdec.freedesktop.org/wiki/
 BuildRequires:	alsa-lib-devel >= 1.0
 BuildRequires:	autoconf >= 2.58
@@ -120,19 +120,6 @@ Static swfdec-gtk library.
 %description gtk-static -l pl.UTF-8
 Statyczna biblioteka swfdec-gtk.
 
-%package icons
-Summary:	swfdec icons for GNOME integration
-Summary(pl.UTF-8):	Ikony swfdec do integracji z GNOME
-Group:		X11/Applications/Multimedia
-Requires(post,postun):	gtk+2
-Requires(post,postun):	hicolor-icon-theme
-
-%description icons
-swfdec icons for GNOME integration.
-
-%description icons -l pl.UTF-8
-Ikony swfdec do integracji z GNOME.
-
 %package apidocs
 Summary:	swfdec API documetation
 Summary(pl.UTF-8):	Dokumentacja API swfdec
@@ -181,17 +168,11 @@ rm -rf $RPM_BUILD_ROOT
 %post	gtk -p /sbin/ldconfig
 %postun	gtk -p /sbin/ldconfig
 
-%post icons
-%update_icon_cache hicolor
-
-%postun icons
-%update_icon_cache hicolor
-
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README
 %attr(755,root,root) %{_libdir}/libswfdec-0.7.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libswfdec-0.7.so.0
+%attr(755,root,root) %ghost %{_libdir}/libswfdec-0.7.so.1
 
 %files devel
 %defattr(644,root,root,755)
@@ -208,7 +189,7 @@ rm -rf $RPM_BUILD_ROOT
 %files gtk
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libswfdec-gtk-0.7.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libswfdec-gtk-0.7.so.0
+%attr(755,root,root) %ghost %{_libdir}/libswfdec-gtk-0.7.so.1
 
 %files gtk-devel
 %defattr(644,root,root,755)
@@ -220,10 +201,6 @@ rm -rf $RPM_BUILD_ROOT
 %files gtk-static
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libswfdec-gtk-0.7.a
-
-%files icons
-%defattr(644,root,root,755)
-%{_iconsdir}/hicolor/*/apps/swfdec.*
 
 %if %{with apidocs}
 %files apidocs
