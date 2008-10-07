@@ -6,12 +6,12 @@
 Summary:	Flash animations redering library
 Summary(pl.UTF-8):	Biblioteka renderująca animacje flash
 Name:		swfdec
-Version:	0.6.8
-Release:	2
+Version:	0.8.0
+Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
-Source0:	http://swfdec.freedesktop.org/download/swfdec/0.6/%{name}-%{version}.tar.gz
-# Source0-md5:	740caf52068556ffe151703342fb634b
+Source0:	http://swfdec.freedesktop.org/download/swfdec/0.8/%{name}-%{version}.tar.gz
+# Source0-md5:	ce3002fc5d8ace9ce34ce960c0cc3c06
 URL:		http://swfdec.freedesktop.org/wiki/
 BuildRequires:	alsa-lib-devel >= 1.0
 BuildRequires:	autoconf >= 2.58
@@ -120,19 +120,6 @@ Static swfdec-gtk library.
 %description gtk-static -l pl.UTF-8
 Statyczna biblioteka swfdec-gtk.
 
-%package icons
-Summary:	swfdec icons for GNOME integration
-Summary(pl.UTF-8):	Ikony swfdec do integracji z GNOME
-Group:		X11/Applications/Multimedia
-Requires(post,postun):	gtk+2
-Requires(post,postun):	hicolor-icon-theme
-
-%description icons
-swfdec icons for GNOME integration.
-
-%description icons -l pl.UTF-8
-Ikony swfdec do integracji z GNOME.
-
 %package apidocs
 Summary:	swfdec API documetation
 Summary(pl.UTF-8):	Dokumentacja API swfdec
@@ -181,49 +168,39 @@ rm -rf $RPM_BUILD_ROOT
 %post	gtk -p /sbin/ldconfig
 %postun	gtk -p /sbin/ldconfig
 
-%post icons
-%update_icon_cache hicolor
-
-%postun icons
-%update_icon_cache hicolor
-
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README
-%attr(755,root,root) %{_libdir}/libswfdec-0.6.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libswfdec-0.6.so.90
+%attr(755,root,root) %{_libdir}/libswfdec-0.8.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libswfdec-0.8.so.0
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-0.6.so
-%{_libdir}/libswfdec-0.6.la
-%dir %{_includedir}/swfdec-0.6
-%{_includedir}/swfdec-0.6/swfdec
-%{_pkgconfigdir}/swfdec-0.6.pc
+%attr(755,root,root) %{_libdir}/libswfdec-0.8.so
+%{_libdir}/libswfdec-0.8.la
+%dir %{_includedir}/swfdec-0.8
+%{_includedir}/swfdec-0.8/swfdec
+%{_pkgconfigdir}/swfdec-0.8.pc
 
 %files static
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-0.6.a
+%attr(755,root,root) %{_libdir}/libswfdec-0.8.a
 
 %files gtk
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.6.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libswfdec-gtk-0.6.so.90
+%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.8.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libswfdec-gtk-0.8.so.0
 
 %files gtk-devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.6.so
-%{_libdir}/libswfdec-gtk-0.6.la
-%{_includedir}/swfdec-0.6/swfdec-gtk
-%{_pkgconfigdir}/swfdec-gtk-0.6.pc
+%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.8.so
+%{_libdir}/libswfdec-gtk-0.8.la
+%{_includedir}/swfdec-0.8/swfdec-gtk
+%{_pkgconfigdir}/swfdec-gtk-0.8.pc
 
 %files gtk-static
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.6.a
-
-%files icons
-%defattr(644,root,root,755)
-%{_iconsdir}/hicolor/*/apps/swfdec.*
+%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.8.a
 
 %if %{with apidocs}
 %files apidocs
