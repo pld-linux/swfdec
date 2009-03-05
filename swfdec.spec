@@ -3,7 +3,7 @@
 %bcond_without	apidocs		# disable gtk-doc
 %bcond_with	vivified	# build (internal) Vivified Flash Debugger
 #
-Summary:	Flash animations redering library
+Summary:	Flash animations rendering library
 Summary(pl.UTF-8):	Biblioteka renderująca animacje flash
 Name:		swfdec
 Version:	0.8.4
