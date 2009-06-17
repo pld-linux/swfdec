@@ -7,7 +7,7 @@ Summary:	Flash animations rendering library
 Summary(pl.UTF-8):	Biblioteka renderująca animacje flash
 Name:		swfdec
 Version:	0.8.4
-Release:	1
+Release:	2
 License:	LGPL v2.1+
 Group:		Libraries
 Source0:	http://swfdec.freedesktop.org/download/swfdec/0.8/%{name}-%{version}.tar.gz
