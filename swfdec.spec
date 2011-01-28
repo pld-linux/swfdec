@@ -17,6 +17,7 @@ BuildRequires:	alsa-lib-devel >= 1.0
 BuildRequires:	autoconf >= 2.58
 BuildRequires:	automake >= 1:1.6
 BuildRequires:	cairo-devel >= 1.6.0
+BuildRequires:	docbook-dtd412-xml
 BuildRequires:	ffmpeg-devel
 BuildRequires:	glib2-devel >= 1:2.10.0
 BuildRequires:	gstreamer-devel >= 0.10.11
