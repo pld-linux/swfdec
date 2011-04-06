@@ -7,7 +7,7 @@ Summary:	Flash animations rendering library
 Summary(pl.UTF-8):	Biblioteka renderująca animacje flash
 Name:		swfdec
 Version:	0.8.4
-Release:	3
+Release:	4
 License:	LGPL v2.1+
 Group:		Libraries
 Source0:	http://swfdec.freedesktop.org/download/swfdec/0.8/%{name}-%{version}.tar.gz
@@ -159,6 +159,7 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT
 
 %{!?with_apidocs:rm -rf $RPM_BUILD_ROOT%{_gtkdocdir}}
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -178,7 +179,6 @@ rm -rf $RPM_BUILD_ROOT
 %files devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libswfdec-0.8.so
-%{_libdir}/libswfdec-0.8.la
 %dir %{_includedir}/swfdec-0.8
 %{_includedir}/swfdec-0.8/swfdec
 %{_pkgconfigdir}/swfdec-0.8.pc
@@ -195,7 +195,6 @@ rm -rf $RPM_BUILD_ROOT
 %files gtk-devel
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libswfdec-gtk-0.8.so
-%{_libdir}/libswfdec-gtk-0.8.la
 %{_includedir}/swfdec-0.8/swfdec-gtk
 %{_pkgconfigdir}/swfdec-gtk-0.8.pc
 
