@@ -7,7 +7,7 @@ Summary:	Flash animations rendering library
 Summary(pl.UTF-8):	Biblioteka renderująca animacje flash
 Name:		swfdec
 Version:	0.8.4
-Release:	4
+Release:	5
 License:	LGPL v2.1+
 Group:		Libraries
 Source0:	http://swfdec.freedesktop.org/download/swfdec/0.8/%{name}-%{version}.tar.gz
@@ -18,22 +18,26 @@ BuildRequires:	autoconf >= 2.58
 BuildRequires:	automake >= 1:1.6
 BuildRequires:	cairo-devel >= 1.6.0
 BuildRequires:	docbook-dtd412-xml
-BuildRequires:	ffmpeg-devel
-BuildRequires:	glib2-devel >= 1:2.10.0
-BuildRequires:	gstreamer-devel >= 0.10.11
-BuildRequires:	gstreamer-plugins-base-devel >= 0.10.17
+BuildRequires:	glib2-devel >= 1:2.16
+BuildRequires:	gstreamer0.10-devel >= 0.10.11
+BuildRequires:	gstreamer0.10-plugins-base-devel >= 0.10.17
 %{?with_vivified:BuildRequires:	gtk+2-devel >= 2:2.11.6}
 BuildRequires:	gtk+2-devel >= 2:2.8.0
 %{?with_apidocs:BuildRequires:	gtk-doc >= 1.6}
-BuildRequires:	libmad-devel >= 0.14.2b
 BuildRequires:	liboil-devel >= 0.3.9
 BuildRequires:	libsoup-devel >= 2.2.100
 BuildRequires:	libtool
 %{?with_vivified:BuildRequires:	ming-devel >= 0.4.0-0.beta5}
-BuildRequires:	pango-devel >= 1:1.10.0
+BuildRequires:	pango-devel >= 1:1.16
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.357
 BuildRequires:	zlib-devel >= 1.1.4
+Requires:	cairo >= 1.6.0
+Requires:	glib2 >= 1:2.16
+Requires:	gstreamer0.10 >= 0.10.11
+Requires:	gstreamer0.10-plugins-base >= 0.10.17
+Requires:	liboil >= 0.3.9
+Requires:	pango >= 1:1.16
 Obsoletes:	gimp-plugin-swfdec
 Obsoletes:	libswfdec0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -53,13 +57,12 @@ Summary:	Header file required to build programs using swfdec library
 Summary(pl.UTF-8):	Pliki nagłówkowe wymagane przez programy używające swfdec
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
-Requires:	cairo-devel >= 1.2.0
-Requires:	ffmpeg-devel
-Requires:	glib2-devel >= 1:2.10.0
-Requires:	gstreamer-devel >= 0.10.11
-Requires:	libmad-devel >= 0.14.2b
+Requires:	cairo-devel >= 1.6.0
+Requires:	glib2-devel >= 1:2.16
+Requires:	gstreamer0.10-devel >= 0.10.11
+Requires:	gstreamer0.10-plugins-base-devel >= 0.10.17
 Requires:	liboil-devel >= 0.3.9
-Requires:	pango-devel >= 1:1.10.0
+Requires:	pango-devel >= 1:1.16
 Obsoletes:	libswfdec0-devel
 
 %description devel
@@ -86,6 +89,9 @@ Summary:	swfdec-gtk library
 Summary(pl.UTF-8):	Biblioteka swfdec-gtk
 Group:		X11/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	alsa-lib >= 1.0
+Requires:	gtk+2 >= 2:2.8.0
+Requires:	libsoup >= 2.2.100
 
 %description gtk
 swfdec-gtk library.
@@ -143,11 +149,9 @@ Dokumentacja API swfdec.
 %{__autoheader}
 %{__automake}
 %configure \
-	--enable-ffmpeg \
 	--enable-gstreamer \
 	--%{?with_apidocs:en}%{!?with_apidocs:dis}able-gtk-doc \
 	--enable-gtk \
-	--enable-mad \
 	%{?with_vivified:--enable-vivified} \
 	--with-html-dir=%{_gtkdocdir}
 %{__make} -j1
