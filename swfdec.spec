@@ -6,12 +6,13 @@
 Summary:	Flash animations rendering library
 Summary(pl.UTF-8):	Biblioteka renderująca animacje flash
 Name:		swfdec
-Version:	0.8.4
-Release:	5
+%define	majver	0.9
+Version:	%{majver}.2
+Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
-Source0:	http://swfdec.freedesktop.org/download/swfdec/0.8/%{name}-%{version}.tar.gz
-# Source0-md5:	aece501d0e73f3e564200a44ec03c385
+Source0:	http://swfdec.freedesktop.org/download/swfdec/%{majver}/%{name}-%{version}.tar.gz
+# Source0-md5:	7be5e39236e2d6efa61a18e83e5ab73d
 URL:		http://swfdec.freedesktop.org/wiki/
 BuildRequires:	alsa-lib-devel >= 1.0
 BuildRequires:	autoconf >= 2.58
@@ -177,34 +178,34 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README
-%attr(755,root,root) %{_libdir}/libswfdec-0.8.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libswfdec-0.8.so.0
+%attr(755,root,root) %{_libdir}/libswfdec-%{majver}.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libswfdec-%{majver}.so.2
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-0.8.so
-%dir %{_includedir}/swfdec-0.8
-%{_includedir}/swfdec-0.8/swfdec
-%{_pkgconfigdir}/swfdec-0.8.pc
+%attr(755,root,root) %{_libdir}/libswfdec-%{majver}.so
+%dir %{_includedir}/swfdec-%{majver}
+%{_includedir}/swfdec-%{majver}/swfdec
+%{_pkgconfigdir}/swfdec-%{majver}.pc
 
 %files static
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-0.8.a
+%attr(755,root,root) %{_libdir}/libswfdec-%{majver}.a
 
 %files gtk
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.8.so.*.*.*
-%attr(755,root,root) %ghost %{_libdir}/libswfdec-gtk-0.8.so.0
+%attr(755,root,root) %{_libdir}/libswfdec-gtk-%{majver}.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libswfdec-gtk-%{majver}.so.2
 
 %files gtk-devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.8.so
-%{_includedir}/swfdec-0.8/swfdec-gtk
-%{_pkgconfigdir}/swfdec-gtk-0.8.pc
+%attr(755,root,root) %{_libdir}/libswfdec-gtk-%{majver}.so
+%{_includedir}/swfdec-%{majver}/swfdec-gtk
+%{_pkgconfigdir}/swfdec-gtk-%{majver}.pc
 
 %files gtk-static
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libswfdec-gtk-0.8.a
+%attr(755,root,root) %{_libdir}/libswfdec-gtk-%{majver}.a
 
 %if %{with apidocs}
 %files apidocs
