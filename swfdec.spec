@@ -1,6 +1,7 @@
 #
 # Conditional build:
 %bcond_without	apidocs		# disable gtk-doc
+%bcond_with	pulseaudio	# use pulseaudio instead of alsa
 %bcond_with	vivified	# build (internal) Vivified Flash Debugger
 #
 Summary:	Flash animations rendering library
@@ -14,7 +15,7 @@ Group:		Libraries
 Source0:	http://swfdec.freedesktop.org/download/swfdec/%{majver}/%{name}-%{version}.tar.gz
 # Source0-md5:	7be5e39236e2d6efa61a18e83e5ab73d
 URL:		http://swfdec.freedesktop.org/wiki/
-BuildRequires:	alsa-lib-devel >= 1.0
+%{!?with_pulseaudio:BuildRequires:	alsa-lib-devel >= 1.0}
 BuildRequires:	autoconf >= 2.58
 BuildRequires:	automake >= 1:1.6
 BuildRequires:	cairo-devel >= 1.6.0
@@ -31,6 +32,7 @@ BuildRequires:	libtool
 %{?with_vivified:BuildRequires:	ming-devel >= 0.4.0-0.beta5}
 BuildRequires:	pango-devel >= 1:1.16
 BuildRequires:	pkgconfig
+%{?with_pulseaudio:BuildRequires:	pulseaudio-devel}
 BuildRequires:	rpmbuild(macros) >= 1.357
 BuildRequires:	zlib-devel >= 1.1.4
 Requires:	cairo >= 1.6.0
@@ -151,9 +153,10 @@ Dokumentacja API swfdec.
 %{__automake}
 %configure \
 	--enable-gstreamer \
-	--%{?with_apidocs:en}%{!?with_apidocs:dis}able-gtk-doc \
 	--enable-gtk \
+	--enable-gtk-doc%{!?with_apidocs:=no} \
 	%{?with_vivified:--enable-vivified} \
+	%{?with_pulseaudio:--with-audio=pulse} \
 	--with-html-dir=%{_gtkdocdir}
 %{__make} -j1
 
