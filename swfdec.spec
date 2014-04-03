@@ -3,13 +3,13 @@
 %bcond_without	apidocs		# disable gtk-doc
 %bcond_with	pulseaudio	# use pulseaudio instead of alsa
 %bcond_with	vivified	# build (internal) Vivified Flash Debugger
-#
+
+%define	majver	0.9
 Summary:	Flash animations rendering library
 Summary(pl.UTF-8):	Biblioteka renderująca animacje flash
 Name:		swfdec
-%define	majver	0.9
 Version:	%{majver}.2
-Release:	1
+Release:	2
 License:	LGPL v2.1+
 Group:		Libraries
 Source0:	http://swfdec.freedesktop.org/download/swfdec/%{majver}/%{name}-%{version}.tar.gz
@@ -135,6 +135,9 @@ Summary:	swfdec API documetation
 Summary(pl.UTF-8):	Dokumentacja API swfdec
 Group:		Documentation
 Requires:	gtk-doc-common
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description apidocs
 swfdec API documetation.
