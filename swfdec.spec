@@ -9,11 +9,12 @@ Summary:	Flash animations rendering library
 Summary(pl.UTF-8):	Biblioteka renderująca animacje flash
 Name:		swfdec
 Version:	%{majver}.2
-Release:	2
+Release:	3
 License:	LGPL v2.1+
 Group:		Libraries
 Source0:	http://swfdec.freedesktop.org/download/swfdec/%{majver}/%{name}-%{version}.tar.gz
 # Source0-md5:	7be5e39236e2d6efa61a18e83e5ab73d
+Patch0:		gtkdoc.patch
 URL:		http://swfdec.freedesktop.org/wiki/
 %{!?with_pulseaudio:BuildRequires:	alsa-lib-devel >= 1.0}
 BuildRequires:	autoconf >= 2.58
@@ -147,6 +148,7 @@ Dokumentacja API swfdec.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__libtoolize}
