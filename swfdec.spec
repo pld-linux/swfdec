@@ -136,9 +136,7 @@ Summary:	swfdec API documetation
 Summary(pl.UTF-8):	Dokumentacja API swfdec
 Group:		Documentation
 Requires:	gtk-doc-common
-%if "%{_rpmversion}" >= "5"
 BuildArch:	noarch
-%endif
 
 %description apidocs
 swfdec API documetation.
